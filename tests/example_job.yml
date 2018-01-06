@@ -3,7 +3,7 @@ base_node:
   excercises:
   - ex1:
     language: cpp
-    name: excercise_1
+    folder: excercise_1
     output_type: string  # We expect a string as an output.
     tests:
       - name: Test 1

@@ -19,6 +19,12 @@ def get_temp_dir():
     return tempdir
 
 
+def create_folder_if_needed(directory):
+    """Create a folder if it does not exist."""
+    if not path.exists(directory):
+        makedirs(directory)
+
+
 def run_command(command, shell=True, cwd=path.curdir, env=environ):
     """Run a generic command in a subprocess.
 

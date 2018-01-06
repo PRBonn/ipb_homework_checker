@@ -16,6 +16,7 @@ log.setLevel(logging.DEBUG)
 BASE_TAG = 'base_node'
 NAME_TAG = 'name'
 TESTS_TAG = 'tests'
+FOLDER_TAG = 'folder'
 INPUT_TAG = 'input_args'
 LANGUAGE_TAG = 'language'
 OUTPUT_TAG = 'expected_output'
@@ -32,23 +33,22 @@ class Checker:
         """Initialize the checker from file."""
         with open(job_file_path, 'r') as stream:
             self._base_node = yaml.safe_load(stream)[BASE_TAG]
-            print(self._base_node)
             self._root_folder = path.expanduser(
                 self._base_node[ROOT_FOLDER_TAG])
 
     def check_homework(self):
         """Run over all excercises in a homework."""
         for excercise in self._base_node[EXCERCISES_TAG]:
-            print(excercise)
-            cwd = path.join(self._root_folder, excercise[NAME_TAG], 'build')
+            cwd = path.join(self._root_folder, excercise[FOLDER_TAG], 'build')
+            tools.create_folder_if_needed(cwd)
             self._build_excercise(excercise, cwd)
-            self._check_all_tests(excercise, cwd)
+            self._run_all_tests(excercise, cwd)
 
-    def _check_all_tests(self, excercise, cwd):
+    def _run_all_tests(self, excercise, cwd):
         """Iterate over the tests in the job and check them."""
         language = excercise[LANGUAGE_TAG]
         for test in excercise[TESTS_TAG]:
-            if self.__check_test(test, language, cwd):
+            if self._run_test(test, language, cwd):
                 log.info('Passed test: %s', test[NAME_TAG])
             else:
                 log.warning('Test %s FAILED.', test[NAME_TAG])
@@ -57,15 +57,15 @@ class Checker:
         build_cmd = "cmake .. && make"
         tools.run_command(build_cmd, cwd=cwd)  # TODO: check this for errors.
 
-    def __check_test(self, current_test, language, cwd):
+    def _run_test(self, current_test, language, cwd):
         if language in CPP_TAGS:
-            output = self.__run_cpp_test(current_test, cwd)
+            output = self._run_cpp_test(current_test, cwd)
             if output == current_test[OUTPUT_TAG]:
                 return True
-        # TODO: handle this properly.
+        log.error(output)
         return False
 
-    def __run_cpp_test(self, current_test, cwd):
+    def _run_cpp_test(self, current_test, cwd):
         input_str = ''
         if INPUT_TAG in current_test:
             input_str = current_test[INPUT_TAG]

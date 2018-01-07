@@ -3,7 +3,7 @@ image: gitlab.ipb.uni-bonn.de:4567/global/docker-images/ipb_default
 test:
   before_script:
   - apt-get update
-  - apt-get install python3-pip
+  - apt-get install -yqq python3-pip
   - pip3 install PyYaml
   script:
   - git submodule update --init

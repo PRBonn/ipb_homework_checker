@@ -41,29 +41,31 @@ class Checker:
         for excercise in self._base_node[EXCERCISES_TAG]:
             cwd = path.join(self._root_folder, excercise[FOLDER_TAG], 'build')
             tools.create_folder_if_needed(cwd)
-            self._build_excercise(excercise, cwd)
+            build_result = self._build_excercise(excercise, cwd)
+            if not build_result.succeeded():
+                log.error("Build failed with error: \n%s", build_result.error)
+                continue
             self._run_all_tests(excercise, cwd)
 
     def _run_all_tests(self, excercise, cwd):
         """Iterate over the tests in the job and check them."""
         language = excercise[LANGUAGE_TAG]
         for test in excercise[TESTS_TAG]:
-            if self._run_test(test, language, cwd):
+            test_result = self._run_test(test, language, cwd)
+            if test_result.succeeded():
                 log.info('Passed test: %s', test[NAME_TAG])
             else:
-                log.warning('Test %s FAILED.', test[NAME_TAG])
+                log.error('Test %s FAILED with output: %s.',
+                          test[NAME_TAG], test_result.error)
 
     def _build_excercise(self, excercise, cwd):
         build_cmd = "cmake .. && make"
-        tools.run_command(build_cmd, cwd=cwd)  # TODO: check this for errors.
+        return tools.run_command(build_cmd, cwd=cwd)
 
     def _run_test(self, current_test, language, cwd):
         if language in CPP_TAGS:
-            output = self._run_cpp_test(current_test, cwd)
-            if output == current_test[OUTPUT_TAG]:
-                return True
-        log.error(output)
-        return False
+            return self._run_cpp_test(current_test, cwd)
+        return None
 
     def _run_cpp_test(self, current_test, cwd):
         input_str = ''

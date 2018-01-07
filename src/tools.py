@@ -1,4 +1,4 @@
-"""Handle various subprocess-related tasks."""
+"""Handle various utility tasks."""
 from os import path
 from os import makedirs
 from os import environ
@@ -25,6 +25,19 @@ def create_folder_if_needed(directory):
         makedirs(directory)
 
 
+class CmdResult:
+    """A small container for command result."""
+
+    def __init__(self, output=None, error=None):
+        """Initialize either output of error."""
+        self.output = output
+        self.error = error
+
+    def succeeded(self):
+        """Check if the command succeeded."""
+        return self.error is None
+
+
 def run_command(command, shell=True, cwd=path.curdir, env=environ):
     """Run a generic command in a subprocess.
 
@@ -47,8 +60,9 @@ def run_command(command, shell=True, cwd=path.curdir, env=environ):
                                          env=env,
                                          startupinfo=startupinfo)
         output_text = ''.join(map(chr, output))
+        return CmdResult(output=output_text)
     except subprocess.CalledProcessError as e:
         output_text = e.output.decode("utf-8")
         log.debug("command finished with code: %s", e.returncode)
         log.debug("command output: \n%s", output_text)
-    return output_text
+        return CmdResult(error=output_text)

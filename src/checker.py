@@ -35,9 +35,12 @@ class Checker:
             self._base_node = yaml.safe_load(stream)[BASE_TAG]
             self._root_folder = path.expanduser(
                 self._base_node[ROOT_FOLDER_TAG])
+            # The results of all tests will be kept here.
+            self._results = {}
 
     def check_homework(self):
         """Run over all excercises in a homework."""
+        results = {}
         for excercise in self._base_node[EXCERCISES_TAG]:
             cwd = path.join(self._root_folder, excercise[FOLDER_TAG], 'build')
             tools.create_folder_if_needed(cwd)
@@ -45,18 +48,17 @@ class Checker:
             if not build_result.succeeded():
                 log.error("Build failed with error: \n%s", build_result.error)
                 continue
-            self._run_all_tests(excercise, cwd)
+            results.update(self._run_all_tests(excercise, cwd))
+        return results
 
     def _run_all_tests(self, excercise, cwd):
         """Iterate over the tests in the job and check them."""
         language = excercise[LANGUAGE_TAG]
+        results = {}
         for test in excercise[TESTS_TAG]:
             test_result = self._run_test(test, language, cwd)
-            if test_result.succeeded():
-                log.info('Passed test: %s', test[NAME_TAG])
-            else:
-                log.error('Test %s FAILED with output: %s.',
-                          test[NAME_TAG], test_result.error)
+            results[test[NAME_TAG]] = test_result
+        return results
 
     def _build_excercise(self, excercise, cwd):
         build_cmd = "cmake .. && make"

@@ -59,8 +59,7 @@ def run_command(command, shell=True, cwd=path.curdir, env=environ):
                                          cwd=cwd,
                                          env=env,
                                          startupinfo=startupinfo)
-        output_text = ''.join(map(chr, output))
-        return CmdResult(output=output_text)
+        return CmdResult(output=output.decode('utf-8'))
     except subprocess.CalledProcessError as e:
         output_text = e.output.decode("utf-8")
         log.debug("command finished with code: %s", e.returncode)

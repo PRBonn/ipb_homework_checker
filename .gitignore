@@ -2,3 +2,5 @@
 /src/__pycache__/
 
 /tests/excercise_1/build/
+
+*.pyc

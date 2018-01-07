@@ -7,6 +7,7 @@ import logging
 from os import path
 
 import tools
+from md_writer import MdWriter
 
 logging.basicConfig()
 log = logging.getLogger("GHC")
@@ -47,6 +48,7 @@ class Checker:
             build_result = self._build_excercise(excercise, cwd)
             if not build_result.succeeded():
                 log.error("Build failed with error: \n%s", build_result.error)
+                results.update(build_result)
                 continue
             results.update(self._run_all_tests(excercise, cwd))
         return results
@@ -80,7 +82,10 @@ class Checker:
 def main():
     """Run this script."""
     checker = Checker(sys.argv[1])
-    checker.check_homework()
+    results = checker.check_homework()
+    md_writer = MdWriter()
+    md_writer.update(results)
+    md_writer.write_md_file('test.md')
 
 
 if __name__ == "__main__":

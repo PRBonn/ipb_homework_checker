@@ -1,4 +1,10 @@
-image: gitlab.ipb.uni-bonn.de:4567/global/docker-images/<image>
+image: gitlab.ipb.uni-bonn.de:4567/global/docker-images/ipb_default
 
-build:
-  - echo 1
+test:
+  script:
+  - git submodule update --init
+  - python -m unittest discover test/
+  tags:
+  - python
+  except:
+  - tags

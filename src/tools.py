@@ -7,6 +7,7 @@ import subprocess
 import logging
 
 PKG_NAME = "homework_checker"
+ROOT_FOLDER = path.dirname(path.dirname(__file__))
 
 log = logging.getLogger("GHC")
 
@@ -23,6 +24,20 @@ def create_folder_if_needed(directory):
     """Create a folder if it does not exist."""
     if not path.exists(directory):
         makedirs(directory)
+
+
+def expand_if_needed(input_path):
+    """Expand the path if it is not absolute."""
+    if path.isabs(input_path):
+        return input_path
+    new_path = path.expanduser(input_path)
+    if path.isabs(new_path):
+        # This path needed user expansion. Now that the user home directory is
+        # expanded this is a full absolute path.
+        return new_path
+    # The user could not be expanded, so we assume it is just another relative
+    # path to the project directory. Mostly used for testing purposes here.
+    return path.join(ROOT_FOLDER, new_path)
 
 
 class CmdResult:

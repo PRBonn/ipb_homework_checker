@@ -33,7 +33,7 @@ class Checker:
         """Initialize the checker from file."""
         with open(job_file_path, 'r') as stream:
             self._base_node = yaml.safe_load(stream)[BASE_TAG]
-            self._root_folder = path.expanduser(
+            self._root_folder = tools.expand_if_needed(
                 self._base_node[ROOT_FOLDER_TAG])
             # The results of all tests will be kept here.
             self._results = {}

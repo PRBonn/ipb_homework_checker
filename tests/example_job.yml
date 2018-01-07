@@ -1,5 +1,5 @@
 base_node:
-  root_folder: ~/Code/generic-homework-checker/tests
+  root_folder: tests
   excercises:
   - ex1:
     language: cpp

@@ -1,0 +1,3 @@
+image: gitlab.ipb.uni-bonn.de:4567/global/docker-images/<image>
+
+echo 1

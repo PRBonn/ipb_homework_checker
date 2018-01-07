@@ -5,6 +5,6 @@ test:
   - git submodule update --init
   - python -m unittest discover test/
   tags:
-  - python
+  - docker
   except:
   - tags

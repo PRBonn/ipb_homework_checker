@@ -2,14 +2,16 @@
 
 
 TABLE_TEMPLATE = "| {ex_name} | {test_name} | {result_sign} |\n"
-TABLE_SEPARATOR = "| --- | --- | --- |\n"
+TABLE_SEPARATOR = "|---|---|:---:|\n"
 
-ERROR_TEMPLATE = """-----
-Test name: {test_name}:
+ERROR_TEMPLATE = """- Test name: `"{test_name}"`:
 ```
 {error}
 ```
 """
+
+SUCCESS_TAG = "✔"
+FAILED_TAG = "✘"
 
 
 class MdWriter:
@@ -27,7 +29,7 @@ class MdWriter:
         """Update the table of completion."""
         for ex_name, result_dict in sorted(exercise_results.items()):
             for test_name, result in sorted(result_dict.items()):
-                result_sign = 'OK' if result.succeeded() else 'FAILED'
+                result_sign = SUCCESS_TAG if result.succeeded() else FAILED_TAG
                 self._md_table += TABLE_TEMPLATE.format(
                     ex_name=ex_name,
                     test_name=test_name,
@@ -37,10 +39,10 @@ class MdWriter:
 
     def write_md_file(self, md_file_path):
         """Write all the added content to the md file."""
-        md_file_content = '# Test results.\n'
+        md_file_content = '# Test results\n'
         md_file_content += self._md_table
         if self._errors:
-            md_file_content += '--------\n'
+            md_file_content += '\n## Encountered errors\n'
             md_file_content += self._errors
         md_file_content += '--------\n'
         md_file_content += 'With love from bot.\n'

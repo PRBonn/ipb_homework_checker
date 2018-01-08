@@ -35,12 +35,15 @@ class Exercise:
 
     def check_all_tests(self):
         """Iterate over the tests and check them."""
+        # Generate empty results.
+        results = {}
         # Build the source if this is needed.
         build_result = self._build_if_needed()
         if not build_result.succeeded():
-            return build_result
-        # Now check the tests.
-        results = {}
+            # The build has failed, so no further testing needed.
+            results[self.name] = build_result
+            return results
+        # The build is either not needed or succeeded. Continue testing.
         for test_node in self._test_nodes:
             test_result = self._run_test(test_node)
             results[test_node[NAME_TAG]] = test_result

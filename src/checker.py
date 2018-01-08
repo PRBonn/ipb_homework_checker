@@ -1,13 +1,10 @@
-#!/usr/bin/python3
 """Check the homework."""
-import sys
 import yaml
 import logging
 
 from os import path
 
 import tools
-from md_writer import MdWriter
 
 logging.basicConfig()
 log = logging.getLogger("GHC")
@@ -103,16 +100,3 @@ class Checker:
                                                self._root_folder)
             results[exercise.name] = exercise.check_all_tests()
         return results
-
-
-def main():
-    """Run this script."""
-    checker = Checker(sys.argv[1])
-    results = checker.check_homework()
-    md_writer = MdWriter()
-    md_writer.update(results)
-    md_writer.write_md_file('test.md')
-
-
-if __name__ == "__main__":
-    main()

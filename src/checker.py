@@ -22,7 +22,7 @@ INPUT_TAG = 'input_args'
 LANGUAGE_TAG = 'language'
 OUTPUT_TAG = 'expected_output'
 ROOT_FOLDER_TAG = 'root_folder'
-EXCERCISES_TAG = 'excercises'
+EXERCISES_TAG = 'exercises'
 
 CPP_TAGS = ['cpp', 'c++', 'CPP', 'C++']
 
@@ -40,29 +40,29 @@ class Checker:
             self._results = {}
 
     def check_homework(self):
-        """Run over all excercises in a homework."""
+        """Run over all exercises in a homework."""
         results = {}
-        for excercise in self._base_node[EXCERCISES_TAG]:
-            cwd = path.join(self._root_folder, excercise[FOLDER_TAG], 'build')
+        for exercise in self._base_node[EXERCISES_TAG]:
+            cwd = path.join(self._root_folder, exercise[FOLDER_TAG], 'build')
             tools.create_folder_if_needed(cwd)
-            build_result = self._build_excercise(excercise, cwd)
+            build_result = self._build_exercise(exercise, cwd)
             if not build_result.succeeded():
                 log.error("Build failed with error: \n%s", build_result.error)
                 results.update(build_result)
                 continue
-            results.update(self._run_all_tests(excercise, cwd))
+            results.update(self._run_all_tests(exercise, cwd))
         return results
 
-    def _run_all_tests(self, excercise, cwd):
+    def _run_all_tests(self, exercise, cwd):
         """Iterate over the tests in the job and check them."""
-        language = excercise[LANGUAGE_TAG]
+        language = exercise[LANGUAGE_TAG]
         results = {}
-        for test in excercise[TESTS_TAG]:
+        for test in exercise[TESTS_TAG]:
             test_result = self._run_test(test, language, cwd)
             results[test[NAME_TAG]] = test_result
         return results
 
-    def _build_excercise(self, excercise, cwd):
+    def _build_exercise(self, exercise, cwd):
         build_cmd = "cmake .. && make"
         return tools.run_command(build_cmd, cwd=cwd)
 

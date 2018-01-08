@@ -17,7 +17,7 @@ class MdWriter:
 
     def __init__(self):
         """Initialize the writer."""
-        self._md_table = TABLE_TEMPLATE.format(ex_name='Excercise Name',
+        self._md_table = TABLE_TEMPLATE.format(ex_name='Exercise Name',
                                                test_name='Test Name',
                                                result_sign='Result')
         self._md_table += TABLE_SEPARATOR

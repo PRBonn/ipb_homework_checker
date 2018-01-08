@@ -3,6 +3,7 @@ import yaml
 
 from os import path
 
+import logging
 import tools
 
 BASE_TAG = 'base_node'
@@ -12,10 +13,20 @@ FOLDER_TAG = 'folder'
 INPUT_TAG = 'input_args'
 LANGUAGE_TAG = 'language'
 OUTPUT_TAG = 'expected_output'
+OUTPUT_TYPE_TAG = 'output_type'
 ROOT_FOLDER_TAG = 'root_folder'
 EXERCISES_TAG = 'exercises'
 
+OUTPUT_MISMATCH_MESSAGE = """Given input: '{input}'
+Your output '{actual}'
+Expected output: '{expected}'"""
+
+OUTPUT_CONVERSION_ERROR = """Expected output of type: '{expected_type}'.
+Got the output of type '{actual_type}'"""
+
 CPP_TAGS = ['cpp', 'c++', 'CPP', 'C++']
+
+log = logging.getLogger("GHC")
 
 
 class Exercise:
@@ -31,6 +42,7 @@ class Exercise:
         """Initialize a generic exercise."""
         self.name = exercise_node[NAME_TAG]
         self._test_nodes = exercise_node[TESTS_TAG]
+        self._output_type = exercise_node[OUTPUT_TYPE_TAG]
         self._cwd = path.join(root_folder, exercise_node[FOLDER_TAG])
 
     def check_all_tests(self):
@@ -75,7 +87,23 @@ class CppExercise(Exercise):
         if INPUT_TAG in test_node:
             input_str = test_node[INPUT_TAG]
         run_cmd = "./main {args}".format(args=input_str)
-        return tools.run_command(run_cmd, cwd=self._cwd)
+        run_result = tools.run_command(run_cmd, cwd=self._cwd)
+        if not run_result.succeeded():
+            return run_result
+        our_output = tools.convert_to(
+            self._output_type, run_result.output)
+        if not our_output:
+            # Conversion has failed.
+            run_result.error = OUTPUT_CONVERSION_ERROR.format(
+                expected_type=self._output_type,
+                actual_type=type(run_result.output))
+            return run_result
+        expected_output = tools.convert_to(
+            self._output_type, test_node[OUTPUT_TAG])
+        if our_output != expected_output:
+            run_result.error = OUTPUT_MISMATCH_MESSAGE.format(
+                actual=our_output, input=input_str, expected=expected_output)
+        return run_result
 
 
 class Checker:

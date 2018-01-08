@@ -4,3 +4,5 @@
 /tests/excercise_1/build/
 
 *.pyc
+
+/homework-checker.sublime-workspace

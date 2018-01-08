@@ -1,15 +1,9 @@
 """Check the homework."""
 import yaml
-import logging
 
 from os import path
 
 import tools
-
-logging.basicConfig()
-log = logging.getLogger("GHC")
-log.setLevel(logging.DEBUG)
-
 
 BASE_TAG = 'base_node'
 NAME_TAG = 'name'

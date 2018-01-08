@@ -68,6 +68,7 @@ class CppExercise(Exercise):
         super().__init__(exercise_node, root_folder)
         # The C++ project will always work from build folder.
         self._cwd = path.join(self._cwd, 'build')
+        tools.create_folder_if_needed(self._cwd)
 
     def _build_if_needed(self):
         return tools.run_command(CppExercise.BUILD_CMD, cwd=self._cwd)

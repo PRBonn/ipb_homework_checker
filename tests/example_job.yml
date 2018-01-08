@@ -14,7 +14,7 @@ base_node:
         input_args: Some string
         expected_output: >
           Some string output
-  - name: Should not build
+  - name: Exercise 2  # This one should not build.
     language: cpp
     folder: exercise_2
     output_type: string

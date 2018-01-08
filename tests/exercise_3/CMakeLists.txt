@@ -3,4 +3,4 @@ project(failing_project)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(main main.cpp)
+add_executable(sum_numbers main.cpp)

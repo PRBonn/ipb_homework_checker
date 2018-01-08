@@ -25,6 +25,7 @@ base_node:
     language: cpp
     folder: exercise_3
     output_type: number
+    binary_name: sum_numbers
     tests:
       - name: Test 1
         input_args: 2 2

@@ -13,6 +13,7 @@ FOLDER_TAG = 'folder'
 INPUT_TAG = 'input_args'
 LANGUAGE_TAG = 'language'
 OUTPUT_TAG = 'expected_output'
+BINARY_NAME_TAG = 'binary_name'
 OUTPUT_TYPE_TAG = 'output_type'
 ROOT_FOLDER_TAG = 'root_folder'
 EXERCISES_TAG = 'exercises'
@@ -44,6 +45,10 @@ class Exercise:
         self._test_nodes = exercise_node[TESTS_TAG]
         self._output_type = exercise_node[OUTPUT_TYPE_TAG]
         self._cwd = path.join(root_folder, exercise_node[FOLDER_TAG])
+        if BINARY_NAME_TAG in exercise_node:
+            self._binary_name = exercise_node[BINARY_NAME_TAG]
+        else:
+            self._binary_name = "main"
 
     def check_all_tests(self):
         """Iterate over the tests and check them."""
@@ -86,7 +91,8 @@ class CppExercise(Exercise):
         input_str = ''
         if INPUT_TAG in test_node:
             input_str = test_node[INPUT_TAG]
-        run_cmd = "./main {args}".format(args=input_str)
+        run_cmd = "./{binary_name} {args}".format(
+            binary_name=self._binary_name, args=input_str)
         run_result = tools.run_command(run_cmd, cwd=self._cwd)
         if not run_result.succeeded():
             return run_result

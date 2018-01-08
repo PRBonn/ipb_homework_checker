@@ -17,7 +17,7 @@ class TestChecker(unittest.TestCase):
         """Dummy test."""
         checker = Checker('tests/example_job.yml')
         results = checker.check_homework()
-        self.assertEqual(len(results), 1)
+        self.assertEqual(len(results), 2)
         self.assertEqual(len(results['Exercise 1']), 2)
         self.assertTrue(results['Exercise 1']['Test 1'].succeeded())
         self.assertTrue(results['Exercise 1']['Test 2'].succeeded())

@@ -23,14 +23,16 @@ class MdWriter:
         self._md_table += TABLE_SEPARATOR
         self._errors = ''  # Markdown part with errors.
 
-    def update(self, test_results):
+    def update(self, exercise_results):
         """Update the table of completion."""
-        for test_name, result in sorted(test_results.items()):
-            result_sign = 'OK' if result.succeeded() else 'FAILED'
-            self._md_table += TABLE_TEMPLATE.format(ex_name='TO BE FILLED',
-                                                    test_name=test_name,
-                                                    result_sign=result_sign)
-            self._add_error(test_name, result)
+        for ex_name, result_dict in sorted(exercise_results.items()):
+            for test_name, result in sorted(result_dict.items()):
+                result_sign = 'OK' if result.succeeded() else 'FAILED'
+                self._md_table += TABLE_TEMPLATE.format(
+                    ex_name=ex_name,
+                    test_name=test_name,
+                    result_sign=result_sign)
+                self._add_error(test_name, result)
         print(self._md_table)
 
     def write_md_file(self, md_file_path):

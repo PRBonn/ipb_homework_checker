@@ -1,7 +1,7 @@
 base_node:
   root_folder: tests
   exercises:
-  - ex1:                  # This is a struct for exercise 1.
+  - name: Exercise 1      # This is a struct for exercise 1.
     language: cpp         # Type of the exercise.
     folder: excercise_1   # Name of the folder containing the exercise.
     output_type: string   # We expect a string as an output.

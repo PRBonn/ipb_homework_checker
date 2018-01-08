@@ -27,6 +27,62 @@ EXERCISES_TAG = 'exercises'
 CPP_TAGS = ['cpp', 'c++', 'CPP', 'C++']
 
 
+class Exercise:
+    """Define an exercise."""
+
+    @staticmethod
+    def from_yaml_node(exercise_node, root_folder):
+        """Create an exercise appropriate for the language."""
+        if exercise_node[LANGUAGE_TAG] in CPP_TAGS:
+            return CppExercise(exercise_node, root_folder)
+
+    def __init__(self, exercise_node, root_folder):
+        """Initialize a generic exercise."""
+        self.name = exercise_node[NAME_TAG]
+        self._test_nodes = exercise_node[TESTS_TAG]
+        self._cwd = path.join(root_folder, exercise_node[FOLDER_TAG])
+
+    def check_all_tests(self):
+        """Iterate over the tests and check them."""
+        # Build the source if this is needed.
+        build_result = self._build_if_needed()
+        if not build_result.succeeded():
+            return build_result
+        # Now check the tests.
+        results = {}
+        for test_node in self._test_nodes:
+            test_result = self._run_test(test_node)
+            results[test_node[NAME_TAG]] = test_result
+        return results
+
+    def _build_if_needed(self):
+        raise NotImplementedError('This method is not implemented.')
+
+    def _run_test(self, test_node):
+        raise NotImplementedError('This method is not implemented.')
+
+
+class CppExercise(Exercise):
+    """Define a C++ exercise."""
+    BUILD_CMD = "cmake .. && make"
+
+    def __init__(self, exercise_node, root_folder):
+        """Initialize the C++ exercise."""
+        super().__init__(exercise_node, root_folder)
+        # The C++ project will always work from build folder.
+        self._cwd = path.join(self._cwd, 'build')
+
+    def _build_if_needed(self):
+        return tools.run_command(CppExercise.BUILD_CMD, cwd=self._cwd)
+
+    def _run_test(self, test_node):
+        input_str = ''
+        if INPUT_TAG in test_node:
+            input_str = test_node[INPUT_TAG]
+        run_cmd = "./main {args}".format(args=input_str)
+        return tools.run_command(run_cmd, cwd=self._cwd)
+
+
 class Checker:
     """Check homework."""
 
@@ -42,41 +98,11 @@ class Checker:
     def check_homework(self):
         """Run over all exercises in a homework."""
         results = {}
-        for exercise in self._base_node[EXERCISES_TAG]:
-            cwd = path.join(self._root_folder, exercise[FOLDER_TAG], 'build')
-            tools.create_folder_if_needed(cwd)
-            build_result = self._build_exercise(exercise, cwd)
-            if not build_result.succeeded():
-                log.error("Build failed with error: \n%s", build_result.error)
-                results.update(build_result)
-                continue
-            results.update(self._run_all_tests(exercise, cwd))
+        for exercise_node in self._base_node[EXERCISES_TAG]:
+            exercise = Exercise.from_yaml_node(exercise_node,
+                                               self._root_folder)
+            results[exercise.name] = exercise.check_all_tests()
         return results
-
-    def _run_all_tests(self, exercise, cwd):
-        """Iterate over the tests in the job and check them."""
-        language = exercise[LANGUAGE_TAG]
-        results = {}
-        for test in exercise[TESTS_TAG]:
-            test_result = self._run_test(test, language, cwd)
-            results[test[NAME_TAG]] = test_result
-        return results
-
-    def _build_exercise(self, exercise, cwd):
-        build_cmd = "cmake .. && make"
-        return tools.run_command(build_cmd, cwd=cwd)
-
-    def _run_test(self, current_test, language, cwd):
-        if language in CPP_TAGS:
-            return self._run_cpp_test(current_test, cwd)
-        return None
-
-    def _run_cpp_test(self, current_test, cwd):
-        input_str = ''
-        if INPUT_TAG in current_test:
-            input_str = current_test[INPUT_TAG]
-        run_cmd = "./main {args}".format(args=input_str)
-        return tools.run_command(run_cmd, cwd=cwd)
 
 
 def main():

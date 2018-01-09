@@ -58,7 +58,7 @@ class Exercise:
         build_result = self._build_if_needed()
         if not build_result.succeeded():
             # The build has failed, so no further testing needed.
-            results[self.name] = build_result
+            results['Build Failed'] = build_result
             return results
         # The build is either not needed or succeeded. Continue testing.
         for test_node in self._test_nodes:

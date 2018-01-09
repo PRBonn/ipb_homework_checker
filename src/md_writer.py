@@ -4,7 +4,7 @@
 TABLE_TEMPLATE = "| {ex_name} | {test_name} | {result_sign} |\n"
 TABLE_SEPARATOR = "|---|---|:---:|\n"
 
-ERROR_TEMPLATE = """- Exercise: `"{ex_name}"`, test: `"{test_name}"`:
+ERROR_TEMPLATE = """- `[{ex_name}][{test_name}]:`
 ```api-blueprint
 {error}
 ```

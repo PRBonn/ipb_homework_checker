@@ -10,6 +10,9 @@ ERROR_TEMPLATE = """- Exercise: `"{ex_name}"`, test: `"{test_name}"`:
 ```
 """
 
+SEPARATOR = "--------\n"
+FINISHING_NOTE = "With 💙 from homework bot 🤖\n"
+
 SUCCESS_TAG = "✔"
 FAILED_TAG = "✘"
 
@@ -45,8 +48,8 @@ class MdWriter:
         if self._errors:
             md_file_content += '\n## Encountered errors\n'
             md_file_content += self._errors
-        md_file_content += '--------\n'
-        md_file_content += 'With 💙 from homework bot 🤖\n'
+        md_file_content += SEPARATOR
+        md_file_content += FINISHING_NOTE
         with open(md_file_path, 'w') as md_file:
             md_file.write(md_file_content)
 

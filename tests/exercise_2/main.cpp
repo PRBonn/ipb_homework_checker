@@ -1,3 +1,3 @@
 int main(int argc, char const *argv[]) {
-  fprintf(stderr, "%s %s output\n", argv[1], argv[2]);
+  fprintf(stdout, "%s %s output\n", argv[1], argv[2]);
 }

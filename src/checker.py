@@ -96,18 +96,17 @@ class CppExercise(Exercise):
         run_result = tools.run_command(run_cmd, cwd=self._cwd)
         if not run_result.succeeded():
             return run_result
-        our_output = tools.convert_to(
-            self._output_type, run_result.output)
+        our_output = tools.convert_to(self._output_type, run_result.stdout)
         if not our_output:
             # Conversion has failed.
-            run_result.error = OUTPUT_CONVERSION_ERROR.format(
+            run_result.stderr = OUTPUT_CONVERSION_ERROR.format(
                 expected_type=self._output_type,
-                actual_type=type(run_result.output))
+                actual_type=type(run_result.stdout))
             return run_result
         expected_output = tools.convert_to(
             self._output_type, test_node[OUTPUT_TAG])
         if our_output != expected_output:
-            run_result.error = OUTPUT_MISMATCH_MESSAGE.format(
+            run_result.stderr = OUTPUT_MISMATCH_MESSAGE.format(
                 actual=our_output, input=input_str, expected=expected_output)
         return run_result
 

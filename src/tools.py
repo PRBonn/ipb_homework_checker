@@ -56,14 +56,16 @@ def convert_to(output_type, value):
 class CmdResult:
     """A small container for command result."""
 
-    def __init__(self, output=None, error=None):
-        """Initialize either output of error."""
-        self.output = output
-        self.error = error
+    def __init__(self, stdout=None, stderr=None):
+        """Initialize either stdout of stderr."""
+        self.stdout = stdout
+        self.stderr = stderr
 
     def succeeded(self):
         """Check if the command succeeded."""
-        return self.error is None
+        if self.stderr:
+            return False
+        return True
 
 
 def run_command(command, shell=True, cwd=path.curdir, env=environ):
@@ -75,21 +77,22 @@ def run_command(command, shell=True, cwd=path.curdir, env=environ):
         str: raw command output
     """
     try:
-        stdin = None
         startupinfo = None
         if isinstance(command, list):
             command = subprocess.list2cmdline(command)
             log.debug("running command: \n%s", command)
-        output = subprocess.check_output(command,
-                                         stdin=stdin,
-                                         stderr=subprocess.STDOUT,
-                                         shell=shell,
-                                         cwd=cwd,
-                                         env=env,
-                                         startupinfo=startupinfo)
-        return CmdResult(output=output.decode('utf-8'))
+        process = subprocess.run(command,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE,
+                                 shell=shell,
+                                 cwd=cwd,
+                                 env=env,
+                                 startupinfo=startupinfo,
+                                 timeout=10)
+        return CmdResult(stdout=process.stdout.decode('utf-8'),
+                         stderr=process.stderr.decode('utf-8'))
     except subprocess.CalledProcessError as e:
         output_text = e.output.decode("utf-8")
         log.debug("command finished with code: %s", e.returncode)
         log.debug("command output: \n%s", output_text)
-        return CmdResult(error=output_text)
+        return CmdResult(stderr=output_text)

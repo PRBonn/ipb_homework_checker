@@ -5,7 +5,7 @@ TABLE_TEMPLATE = "| {ex_name} | {test_name} | {result_sign} |\n"
 TABLE_SEPARATOR = "|---|---|:---:|\n"
 
 ERROR_TEMPLATE = """- Exercise: `"{ex_name}"`, test: `"{test_name}"`:
-```
+```api-blueprint
 {error}
 ```
 """
@@ -59,4 +59,4 @@ class MdWriter:
             return
         self._errors += ERROR_TEMPLATE.format(ex_name=exercise_name,
                                               test_name=test_name,
-                                              error=test_result.error)
+                                              error=test_result.stderr)

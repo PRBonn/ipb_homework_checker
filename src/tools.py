@@ -96,3 +96,19 @@ def run_command(command, shell=True, cwd=path.curdir, env=environ):
         log.debug("command finished with code: %s", e.returncode)
         log.debug("command output: \n%s", output_text)
         return CmdResult(stderr=output_text)
+
+
+class OneOf:
+    """Check that an item is one of the list."""
+
+    def __init__(self, some_list):
+        """Set the list to choose from."""
+        self.__items = some_list
+
+    def __call__(self, item):
+        """Check that the list contains what is needed."""
+        return item in self.__items
+
+    def __str__(self):
+        """Override str for this class."""
+        return "One of these values: {}".format(self.__items)

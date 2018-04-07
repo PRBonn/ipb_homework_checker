@@ -1,0 +1,12 @@
+exercises:
+- language: <class 'str'>
+  input_args: <class 'str'>
+  tests:
+  - name: <class 'str'>
+    expected_output: Or(<class 'str'>, <class 'float'>, <class 'int'>)
+    input_args: <class 'str'>
+  name: <class 'str'>
+  output_type: "One of these values: ['string', 'number']"
+  binary_name: <class 'str'>
+  folder: <class 'str'>
+folder: <class 'str'>

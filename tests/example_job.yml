@@ -14,6 +14,7 @@ exercises:
       input_args: Some string
       expected_output: >
         Some string output
+
 - name: Exercise 2  # This one should not build.
   language: cpp
   folder: exercise_2
@@ -21,11 +22,25 @@ exercises:
   tests:  # Check should not reach the testing as the code does not build.
     - name: Test 1
       expected_output: "not important"
+
 - name: Exercise 3
   language: cpp
   folder: exercise_3
   output_type: number
   binary_name: sum_numbers
+  tests:
+    - name: Test 1
+      input_args: 2 2
+      expected_output: 4
+    - name: Test 2  # This test should fail.
+      input_args: 2.15 5
+      expected_output: 7.15
+
+- name: Exercise 4
+  language: cpp
+  folder: exercise_4
+  build_type: simple
+  output_type: number
   tests:
     - name: Test 1
       input_args: 2 2

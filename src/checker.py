@@ -4,7 +4,7 @@ from os import path
 
 import logging
 import tools
-from schema_manager import SchemaManager, Tags
+from schema_manager import SchemaManager, Tags, LangTags, BuildTags
 
 OUTPUT_MISMATCH_MESSAGE = """Given input: '{input}'
 Your output '{actual}'
@@ -13,7 +13,6 @@ Expected output: '{expected}'"""
 OUTPUT_CONVERSION_ERROR = """Expected output of type: '{expected_type}'.
 Got the output of type '{actual_type}'"""
 
-CPP_TAGS = ['cpp', 'c++', 'CPP', 'C++']
 
 log = logging.getLogger("GHC")
 
@@ -24,7 +23,7 @@ class Exercise:
     @staticmethod
     def from_yaml_node(exercise_node, root_folder):
         """Create an exercise appropriate for the language."""
-        if exercise_node[Tags.LANGUAGE_TAG] in CPP_TAGS:
+        if exercise_node[Tags.LANGUAGE_TAG] in LangTags.ALL:
             return CppExercise(exercise_node, root_folder)
 
     def __init__(self, exercise_node, root_folder):
@@ -64,16 +63,22 @@ class Exercise:
 class CppExercise(Exercise):
     """Define a C++ exercise."""
     BUILD_CMD = "cmake .. && make"
+    BUILD_CMD_SIMPLE = "clang++ -std=c++11 -o {binary} {binary}.cpp"
 
     def __init__(self, exercise_node, root_folder):
         """Initialize the C++ exercise."""
         super().__init__(exercise_node, root_folder)
-        # The C++ project will always work from build folder.
-        self._cwd = path.join(self._cwd, 'build')
-        tools.create_folder_if_needed(self._cwd)
+        self._build_type = exercise_node[Tags.BUILD_TYPE_TAG]
+        if self._build_type == BuildTags.CMAKE:
+            # The cmake project will always work from build folder.
+            self._cwd = path.join(self._cwd, 'build')
+            tools.create_folder_if_needed(self._cwd)
 
     def _build_if_needed(self):
-        return tools.run_command(CppExercise.BUILD_CMD, cwd=self._cwd)
+        if self._build_type == BuildTags.CMAKE:
+            return tools.run_command(CppExercise.BUILD_CMD, cwd=self._cwd)
+        return tools.run_command(CppExercise.BUILD_CMD_SIMPLE.format(
+            binary=self._binary_name), cwd=self._cwd)
 
     def _run_test(self, test_node):
         input_str = ''

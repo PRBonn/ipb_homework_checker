@@ -14,16 +14,16 @@ SCHEMA_FILE = path.join(path.dirname(
 
 class Tags:
     """List of tags available."""
-    BASE_TAG = 'base_node'
-    NAME_TAG = 'name'
-    TESTS_TAG = 'tests'
+    BINARY_NAME_TAG = 'binary_name'
+    BUILD_TYPE_TAG = 'build_type'
+    EXERCISES_TAG = 'exercises'
     FOLDER_TAG = 'folder'
     INPUT_TAG = 'input_args'
     LANGUAGE_TAG = 'language'
+    NAME_TAG = 'name'
     OUTPUT_TAG = 'expected_output'
-    BINARY_NAME_TAG = 'binary_name'
     OUTPUT_TYPE_TAG = 'output_type'
-    EXERCISES_TAG = 'exercises'
+    TESTS_TAG = 'tests'
 
 
 class OutputTags:
@@ -31,6 +31,19 @@ class OutputTags:
     STRING = 'string'
     NUMBER = 'number'
     ALL = [STRING, NUMBER]
+
+
+class BuildTags:
+    """Define tags for build types."""
+    CMAKE = 'cmake'
+    SIMPLE = 'simple'
+    ALL = [CMAKE, SIMPLE]
+
+
+class LangTags:
+    """Define tags for build types."""
+    CPP = 'cpp'
+    ALL = [CPP]
 
 
 class SchemaManager:
@@ -44,11 +57,14 @@ class SchemaManager:
                 Tags.EXERCISES_TAG: [
                     {
                         Tags.NAME_TAG: str,
-                        Tags.LANGUAGE_TAG: str,
+                        Tags.LANGUAGE_TAG: OneOf(LangTags.ALL),
                         Tags.FOLDER_TAG: str,
                         Tags.OUTPUT_TYPE_TAG: OneOf(OutputTags.ALL),
                         Optional(Tags.INPUT_TAG): str,
                         Optional(Tags.BINARY_NAME_TAG, default="main"): str,
+                        Optional(
+                            Tags.BUILD_TYPE_TAG,
+                            default=BuildTags.CMAKE): OneOf(BuildTags.ALL),
                         Tags.TESTS_TAG: [
                             {
                                 Tags.NAME_TAG: str,
@@ -97,5 +113,5 @@ class SchemaManager:
                 new_list.append(SchemaManager.__sanitize_value(val))
             return new_list
         if isinstance(input_var, Optional):
-            return str(input_var._schema)
+            return str(input_var._schema) + " [OPTIONAL]"
         return str(input_var)

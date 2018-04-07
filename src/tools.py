@@ -111,4 +111,4 @@ class OneOf:
 
     def __str__(self):
         """Override str for this class."""
-        return "One of these values: {}".format(self.__items)
+        return "Possible values: {}".format(self.__items)

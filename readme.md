@@ -11,3 +11,7 @@ with:
 ```
 sudo pip3 install ruamel.yaml schema
 ```
+
+## Start digging ##
+If you want to change anything, start from `check_homework` script and dig from
+there.

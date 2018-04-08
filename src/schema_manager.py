@@ -41,6 +41,7 @@ class SchemaManager:
             }]
         })
         yaml = YAML()
+        yaml.explicit_start = True
         with open(file_name, 'r') as stream:
             contents = yaml.load(stream)
             try:

@@ -7,6 +7,7 @@ class Tags:
     BUILD_TYPE_TAG = 'build_type'
     EXERCISES_TAG = 'exercises'
     FOLDER_TAG = 'folder'
+    HOMEWORKS_TAG = 'homeworks'
     INPUT_TAG = 'input_args'
     LANGUAGE_TAG = 'language'
     NAME_TAG = 'name'

@@ -60,3 +60,23 @@ homeworks:
         tests:
           - name: Test 1  # Should fail as the binary returns a string
             expected_output: 4
+      - name: Exercise 2  # Non existing exercise
+        language: cpp
+        folder: exercise_2
+        build_type: simple
+        output_type: number
+        tests:
+          - name: Test 1  # Should fail as the binary returns a string
+            expected_output: 4
+
+  - name: "Homework 3"  # Non existing homework
+    folder: "homework_3"
+    exercises:
+      - name: Irrelevant
+        language: cpp
+        folder: exercise_1
+        build_type: simple
+        output_type: number
+        tests:
+          - name: Irrelevant
+            expected_output: 4

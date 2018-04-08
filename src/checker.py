@@ -24,18 +24,22 @@ class Exercise:
     @staticmethod
     def from_yaml_node(exercise_node, root_folder):
         """Create an exercise appropriate for the language."""
+        curr_folder = path.join(root_folder, exercise_node[Tags.FOLDER_TAG])
+        if not path.exists(curr_folder):
+            log.warning("Folder '%s' does not exist. Skipping.", curr_folder)
+            return None
         if exercise_node[Tags.LANGUAGE_TAG] == LangTags.CPP:
-            return CppExercise(exercise_node, root_folder)
+            return CppExercise(exercise_node, curr_folder)
         else:
             log.error("Unknown exercise language.")
             return None
 
-    def __init__(self, exercise_node, root_folder):
+    def __init__(self, exercise_node, curr_folder):
         """Initialize a generic exercise."""
         self.name = exercise_node[Tags.NAME_TAG]
         self._test_nodes = exercise_node[Tags.TESTS_TAG]
         self._output_type = exercise_node[Tags.OUTPUT_TYPE_TAG]
-        self._cwd = path.join(root_folder, exercise_node[Tags.FOLDER_TAG])
+        self._cwd = curr_folder
         if Tags.BINARY_NAME_TAG in exercise_node:
             self._binary_name = exercise_node[Tags.BINARY_NAME_TAG]
         else:
@@ -126,10 +130,16 @@ class Checker:
         for homework_node in self._base_node[Tags.HOMEWORKS_TAG]:
             current_folder = path.join(
                 self._root_folder, homework_node[Tags.FOLDER_TAG])
+            if not path.exists(current_folder):
+                log.warning("Folder '%s' does not exist. Skiping.",
+                            current_folder)
+                continue
             hw_name = homework_node[Tags.NAME_TAG]
             results[hw_name] = {}
             for exercise_node in homework_node[Tags.EXERCISES_TAG]:
                 exercise = Exercise.from_yaml_node(exercise_node,
                                                    current_folder)
+                if not exercise:
+                    continue
                 results[hw_name][exercise.name] = exercise.check_all_tests()
         return results

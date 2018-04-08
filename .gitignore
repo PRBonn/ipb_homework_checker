@@ -1,11 +1,15 @@
+# Ignore stuff with no extension.
+*
+!/**/
+!*.*
+
 
 /src/__pycache__/
 
 /tests/excercise_1/build/
 
 *.pyc
-
-/homework-checker.sublime-workspace
+*.sublime-workspace
 
 /test.md
 

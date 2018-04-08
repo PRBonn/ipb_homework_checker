@@ -17,30 +17,29 @@ class SchemaManager:
 
     def __init__(self, file_name):
         """Create a schema for my tests."""
-        self.__schema = Schema(
-            {
+        self.__schema = Schema({
+            Tags.FOLDER_TAG: str,
+            Tags.HOMEWORKS_TAG: [{
+                Tags.NAME_TAG: str,
                 Tags.FOLDER_TAG: str,
-                Tags.EXERCISES_TAG: [
-                    {
+                Tags.EXERCISES_TAG: [{
+                    Tags.NAME_TAG: str,
+                    Tags.LANGUAGE_TAG: OneOf(LangTags.ALL),
+                    Tags.FOLDER_TAG: str,
+                    Tags.OUTPUT_TYPE_TAG: OneOf(OutputTags.ALL),
+                    Optional(Tags.INPUT_TAG): str,
+                    Optional(Tags.BINARY_NAME_TAG, default="main"): str,
+                    Optional(
+                        Tags.BUILD_TYPE_TAG,
+                        default=BuildTags.CMAKE): OneOf(BuildTags.ALL),
+                    Tags.TESTS_TAG: [{
                         Tags.NAME_TAG: str,
-                        Tags.LANGUAGE_TAG: OneOf(LangTags.ALL),
-                        Tags.FOLDER_TAG: str,
-                        Tags.OUTPUT_TYPE_TAG: OneOf(OutputTags.ALL),
-                        Optional(Tags.INPUT_TAG): str,
-                        Optional(Tags.BINARY_NAME_TAG, default="main"): str,
-                        Optional(
-                            Tags.BUILD_TYPE_TAG,
-                            default=BuildTags.CMAKE): OneOf(BuildTags.ALL),
-                        Tags.TESTS_TAG: [
-                            {
-                                Tags.NAME_TAG: str,
-                                Tags.OUTPUT_TAG: Or(str, float, int),
-                                Optional(Tags.INPUT_TAG): str
-                            }
-                        ]
-                    }
-                ]
-            })
+                        Tags.OUTPUT_TAG: Or(str, float, int),
+                        Optional(Tags.INPUT_TAG): str
+                    }]
+                }]
+            }]
+        })
         yaml = YAML()
         with open(file_name, 'r') as stream:
             contents = yaml.load(stream)

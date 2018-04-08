@@ -4,7 +4,7 @@ from os import path
 
 import logging
 import tools
-from schema_tags import Tags, LangTags, BuildTags, OutputTags
+from schema_tags import Tags, LangTags, BuildTags
 from schema_manager import SchemaManager
 
 OUTPUT_MISMATCH_MESSAGE = """Given input: '{input}'
@@ -24,8 +24,11 @@ class Exercise:
     @staticmethod
     def from_yaml_node(exercise_node, root_folder):
         """Create an exercise appropriate for the language."""
-        if exercise_node[Tags.LANGUAGE_TAG] in LangTags.ALL:
+        if exercise_node[Tags.LANGUAGE_TAG] == LangTags.CPP:
             return CppExercise(exercise_node, root_folder)
+        else:
+            log.error("Unknown exercise language.")
+            return None
 
     def __init__(self, exercise_node, root_folder):
         """Initialize a generic exercise."""
@@ -118,10 +121,15 @@ class Checker:
         self._results = {}
 
     def check_homework(self):
-        """Run over all exercises in a homework."""
+        """Run over all exercises in all homeworks."""
         results = {}
-        for exercise_node in self._base_node[Tags.EXERCISES_TAG]:
-            exercise = Exercise.from_yaml_node(exercise_node,
-                                               self._root_folder)
-            results[exercise.name] = exercise.check_all_tests()
+        for homework_node in self._base_node[Tags.HOMEWORKS_TAG]:
+            current_folder = path.join(
+                self._root_folder, homework_node[Tags.FOLDER_TAG])
+            hw_name = homework_node[Tags.NAME_TAG]
+            results[hw_name] = {}
+            for exercise_node in homework_node[Tags.EXERCISES_TAG]:
+                exercise = Exercise.from_yaml_node(exercise_node,
+                                                   current_folder)
+                results[hw_name][exercise.name] = exercise.check_all_tests()
         return results

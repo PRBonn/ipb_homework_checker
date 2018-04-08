@@ -1,59 +1,62 @@
 ---
 folder: tests
-exercises:
-- name: Exercise 1      # This is a struct for exercise 1.
-  language: cpp         # Type of the exercise.
-  folder: exercise_1    # Name of the folder containing the exercise.
-  output_type: string   # We expect a string as an output.
-  tests:                # An exercise can have multiple tests.
-    - name: Test 1
-      expected_output: >
-        This is a long test output that we expect to be produced by the code.
-        We will compare the ouput to this EXACTLY.
-    - name: Test 2
-      input_args: Some string
-      expected_output: >
-        Some string output
+homeworks:
+  - name: "Homework 1"
+    folder: "homework_1"
+    exercises:
+      - name: Exercise 1  # This is a struct for exercise 1.
+        language: cpp         # Type of the exercise.
+        folder: exercise_1    # Name of the folder containing the exercise.
+        output_type: string   # We expect a string as an output.
+        tests:                # An exercise can have multiple tests.
+          - name: Test 1
+            expected_output: >
+              This is a long test output that we expect to be produced by the
+              code. We will compare the ouput to this EXACTLY.
+          - name: Test 2
+            input_args: Some string
+            expected_output: >
+              Some string output
+      - name: Exercise 2  # This one should not build.
+        language: cpp
+        folder: exercise_2
+        output_type: string
+        tests:  # Check should not reach the testing as the code does not build.
+          - name: Test 1
+            expected_output: "not important"
+      - name: Exercise 3
+        language: cpp
+        folder: exercise_3
+        output_type: number
+        binary_name: sum_numbers
+        tests:
+          - name: Test 1
+            input_args: 2 2
+            expected_output: 4
+          - name: Test 2  # This test should fail.
+            input_args: 2.15 5
+            expected_output: 7.15
+      - name: Exercise 4
+        language: cpp
+        folder: exercise_4
+        build_type: simple
+        output_type: number
+        tests:
+          - name: Test 1
+            input_args: 2 2
+            expected_output: 4
+          - name: Test 2  # This test should fail.
+            input_args: 2.15 5
+            expected_output: 7.15
 
-- name: Exercise 2  # This one should not build.
-  language: cpp
-  folder: exercise_2
-  output_type: string
-  tests:  # Check should not reach the testing as the code does not build.
-    - name: Test 1
-      expected_output: "not important"
-
-- name: Exercise 3
-  language: cpp
-  folder: exercise_3
-  output_type: number
-  binary_name: sum_numbers
-  tests:
-    - name: Test 1
-      input_args: 2 2
-      expected_output: 4
-    - name: Test 2  # This test should fail.
-      input_args: 2.15 5
-      expected_output: 7.15
-
-- name: Exercise 4
-  language: cpp
-  folder: exercise_4
-  build_type: simple
-  output_type: number
-  tests:
-    - name: Test 1
-      input_args: 2 2
-      expected_output: 4
-    - name: Test 2  # This test should fail.
-      input_args: 2.15 5
-      expected_output: 7.15
-
-- name: Exercise 5
-  language: cpp
-  folder: exercise_5
-  build_type: simple
-  output_type: number
-  tests:
-    - name: Test 1  # Should fail as the binary returns a string
-      expected_output: 4
+  - name: "Homework 2"
+    folder: "homework_2"
+    exercises:
+      - name: Exercise 1
+        language: cpp
+        folder: exercise_1
+        build_type: simple
+        output_type: number
+        tests:
+          - name: Test 1  # Should fail as the binary returns a string
+            expected_output: 4

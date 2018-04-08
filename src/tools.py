@@ -69,6 +69,13 @@ class CmdResult:
             return False
         return True
 
+    def __repr__(self):
+        """Representatin of command result."""
+        if self.stderr:
+            return "stdout: {}, stderr: {}".format(self.stdout.strip(),
+                                                   self.stderr.strip())
+        return self.stdout.strip()
+
 
 def run_command(command, shell=True, cwd=path.curdir, env=environ):
     """Run a generic command in a subprocess.

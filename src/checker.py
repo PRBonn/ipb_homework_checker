@@ -4,7 +4,8 @@ from os import path
 
 import logging
 import tools
-from schema_manager import SchemaManager, Tags, LangTags, BuildTags
+from schema_tags import Tags, LangTags, BuildTags, OutputTags
+from schema_manager import SchemaManager
 
 OUTPUT_MISMATCH_MESSAGE = """Given input: '{input}'
 Your output '{actual}'
@@ -18,7 +19,7 @@ log = logging.getLogger("GHC")
 
 
 class Exercise:
-    """Define an exercise."""
+    """Define an abstract exercise."""
 
     @staticmethod
     def from_yaml_node(exercise_node, root_folder):
@@ -89,14 +90,13 @@ class CppExercise(Exercise):
         run_result = tools.run_command(run_cmd, cwd=self._cwd)
         if not run_result.succeeded():
             return run_result
-        our_output = tools.convert_to(self._output_type, run_result.stdout)
+        our_output, error = tools.convert_to(
+            self._output_type, run_result.stdout)
         if not our_output:
             # Conversion has failed.
-            run_result.stderr = OUTPUT_CONVERSION_ERROR.format(
-                expected_type=self._output_type,
-                actual_type=type(run_result.stdout))
+            run_result.stderr = error
             return run_result
-        expected_output = tools.convert_to(
+        expected_output, error = tools.convert_to(
             self._output_type, test_node[Tags.OUTPUT_TAG])
         if our_output != expected_output:
             run_result.stderr = OUTPUT_MISMATCH_MESSAGE.format(

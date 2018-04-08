@@ -6,6 +6,8 @@ import tempfile
 import subprocess
 import logging
 
+from schema_tags import OutputTags
+
 PKG_NAME = "homework_checker"
 ROOT_FOLDER = path.dirname(path.dirname(__file__))
 
@@ -43,14 +45,14 @@ def expand_if_needed(input_path):
 def convert_to(output_type, value):
     """Convert the value to a specified type."""
     try:
-        if output_type == 'string':
-            return str(value)
-        if output_type == 'number':
-            return float(value)
+        if output_type == OutputTags.STRING:
+            result = str(value)
+        if output_type == OutputTags.NUMBER:
+            result = float(value)
     except ValueError as e:
-        log.error('Number expected. Other type provided.')
-        log.error('Real error: %s.', e)
-        return None
+        log.error('Exception: %s.', e)
+        return None, str(e)
+    return result, "OK"
 
 
 class CmdResult:
@@ -96,19 +98,3 @@ def run_command(command, shell=True, cwd=path.curdir, env=environ):
         log.debug("command finished with code: %s", e.returncode)
         log.debug("command output: \n%s", output_text)
         return CmdResult(stderr=output_text)
-
-
-class OneOf:
-    """Check that an item is one of the list."""
-
-    def __init__(self, some_list):
-        """Set the list to choose from."""
-        self.__items = some_list
-
-    def __call__(self, item):
-        """Check that the list contains what is needed."""
-        return item in self.__items
-
-    def __str__(self):
-        """Override str for this class."""
-        return "Possible values: {}".format(self.__items)

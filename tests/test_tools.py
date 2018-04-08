@@ -9,6 +9,7 @@ sys.path.append('src')
 sys.path.append('../src')
 
 import tools
+from schema_tags import OutputTags
 
 
 class TestTools(unittest.TestCase):
@@ -20,3 +21,17 @@ class TestTools(unittest.TestCase):
         if path.basename(tools.ROOT_FOLDER):
             self.assertEqual(path.basename(tools.ROOT_FOLDER),
                              'generic-homework-checker')
+
+    def test_convert_to(self):
+        """Test conversion to expected type."""
+        output, error = tools.convert_to(OutputTags.NUMBER, "value")
+        self.assertEqual(output, None)
+        self.assertEqual(error, "could not convert string to float: 'value'")
+
+        output, error = tools.convert_to(OutputTags.STRING, 3.14)
+        self.assertEqual(output, "3.14")
+        self.assertEqual(error, "OK")
+
+        output, error = tools.convert_to(OutputTags.NUMBER, "3.14")
+        self.assertEqual(output, 3.14)
+        self.assertEqual(error, "OK")

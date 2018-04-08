@@ -48,3 +48,12 @@ exercises:
     - name: Test 2  # This test should fail.
       input_args: 2.15 5
       expected_output: 7.15
+
+- name: Exercise 5
+  language: cpp
+  folder: exercise_5
+  build_type: simple
+  output_type: number
+  tests:
+    - name: Test 1  # Should fail as the binary returns a string
+      expected_output: 4

@@ -3,47 +3,13 @@ import sys
 import logging
 from os import path
 from schema import Schema, SchemaError, Or, Optional
+from schema_tags import Tags, OutputTags, BuildTags, LangTags, OneOf
 from ruamel.yaml import YAML
-from tools import OneOf
 
 log = logging.getLogger("GHC")
 
 SCHEMA_FILE = path.join(path.dirname(
     path.dirname(__file__)), "schema", "schema.yml")
-
-
-class Tags:
-    """List of tags available."""
-    BINARY_NAME_TAG = 'binary_name'
-    BUILD_TYPE_TAG = 'build_type'
-    EXERCISES_TAG = 'exercises'
-    FOLDER_TAG = 'folder'
-    INPUT_TAG = 'input_args'
-    LANGUAGE_TAG = 'language'
-    NAME_TAG = 'name'
-    OUTPUT_TAG = 'expected_output'
-    OUTPUT_TYPE_TAG = 'output_type'
-    TESTS_TAG = 'tests'
-
-
-class OutputTags:
-    """Define tags for output types."""
-    STRING = 'string'
-    NUMBER = 'number'
-    ALL = [STRING, NUMBER]
-
-
-class BuildTags:
-    """Define tags for build types."""
-    CMAKE = 'cmake'
-    SIMPLE = 'simple'
-    ALL = [CMAKE, SIMPLE]
-
-
-class LangTags:
-    """Define tags for build types."""
-    CPP = 'cpp'
-    ALL = [CPP]
 
 
 class SchemaManager:

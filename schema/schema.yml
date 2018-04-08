@@ -1,13 +1,13 @@
 folder: <class 'str'>
 exercises:
-- folder: <class 'str'>
+- build_type [OPTIONAL]: "Possible values: ['cmake', 'simple']"
+  output_type: "Possible values: ['string', 'number']"
+  language: "Possible values: ['cpp']"
   tests:
   - name: <class 'str'>
-    expected_output: Or(<class 'str'>, <class 'float'>, <class 'int'>)
     input_args [OPTIONAL]: <class 'str'>
-  language: "Possible values: ['cpp']"
+    expected_output: Or(<class 'str'>, <class 'float'>, <class 'int'>)
   binary_name [OPTIONAL]: <class 'str'>
-  build_type [OPTIONAL]: "Possible values: ['cmake', 'simple']"
+  folder: <class 'str'>
   name: <class 'str'>
-  output_type: "Possible values: ['string', 'number']"
   input_args [OPTIONAL]: <class 'str'>

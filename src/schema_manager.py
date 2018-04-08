@@ -1,10 +1,12 @@
 """Manage creation of schema."""
 import sys
 import logging
+import operator
 from os import path
 from schema import Schema, SchemaError, Or, Optional
 from schema_tags import Tags, OutputTags, BuildTags, LangTags, OneOf
 from ruamel.yaml import YAML
+from ruamel.yaml.comments import CommentedMap
 
 log = logging.getLogger("GHC")
 
@@ -41,6 +43,7 @@ class SchemaManager:
             }]
         })
         yaml = YAML()
+        yaml.explicit_start = True
         with open(file_name, 'r') as stream:
             contents = yaml.load(stream)
             try:
@@ -71,7 +74,8 @@ class SchemaManager:
             for key, val in input_var.items():
                 new_dict[SchemaManager.__sanitize_value(key)] \
                     = SchemaManager.__sanitize_value(val)
-            return new_dict
+            return CommentedMap(
+                sorted(new_dict.items(), key=operator.itemgetter(0)))
         if isinstance(input_var, list):
             new_list = []
             for val in input_var:

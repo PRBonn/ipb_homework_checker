@@ -37,7 +37,7 @@ class Task:
 
     def __init__(self, task_node, curr_folder):
         """Initialize a generic Task."""
-        self._test_nodes = None  # Sometimes we don't have tests.
+        self._test_nodes = []  # Sometimes we don't have tests.
         self.name = task_node[Tags.NAME_TAG]
         if Tags.TESTS_TAG in task_node:
             self._test_nodes = task_node[Tags.TESTS_TAG]

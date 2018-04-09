@@ -4,9 +4,9 @@ homeworks:
   - name: "Homework 1"
     folder: "homework_1"
     tasks:
-      - name: Task 1  # This is a struct for Task 1.
+      - name: Task 1          # This is a struct for Task 1.
         language: cpp         # Type of the Task.
-        folder: task_1    # Name of the folder containing the Task.
+        folder: task_1        # Name of the folder containing the Task.
         output_type: string   # We expect a string as an output.
         tests:                # An Task can have multiple tests.
           - name: Test 1

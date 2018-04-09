@@ -21,7 +21,7 @@ class TestChecker(unittest.TestCase):
         results = checker.check_homework()
         self.assertEqual(len(results), 2)
         self.assertEqual(len(results['Homework 1']), 4)
-        self.assertEqual(len(results['Homework 1']['Task 1']), 2)
+        self.assertEqual(len(results['Homework 1']['Task 1']), 3)
         self.assertEqual(len(results['Homework 2']), 2)
         self.assertEqual(results['Homework 1']
                          ['Task 1']['Test 1'].stderr, "")
@@ -32,7 +32,7 @@ class TestChecker(unittest.TestCase):
 
         self.assertEqual(len(results['Homework 1']['Task 2']), 1)
         self.assertNotIn("Test 1", results['Homework 1']['Task 2'])
-        self.assertIn("Build Failed", results['Homework 1']['Task 2'])
+        self.assertIn("Build Succeeded", results['Homework 1']['Task 2'])
 
         self.assertTrue(results['Homework 1']
                         ['Task 3']['Test 1'].succeeded())

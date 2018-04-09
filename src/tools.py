@@ -69,6 +69,11 @@ class CmdResult:
             return False
         return True
 
+    @staticmethod
+    def success():
+        """Return a cmd result that is a success."""
+        return CmdResult(stdout="Success!")
+
     def __repr__(self):
         """Representatin of command result."""
         if self.stderr:

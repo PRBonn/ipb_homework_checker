@@ -55,10 +55,11 @@ class Task:
         results = {}
         # Build the source if this is needed.
         build_result = self._build_if_needed()
-        if build_result and not build_result.succeeded():
+        if build_result:
             # The build has failed, so no further testing needed.
-            results['Build Failed'] = build_result
-            return results
+            results['Build Succeeded'] = build_result
+            if not build_result.succeeded():
+                return results
         # The build is either not needed or succeeded. Continue testing.
         for test_node in self._test_nodes:
             test_result = self._run_test(test_node)
@@ -68,11 +69,11 @@ class Task:
             results['Style Errors'] = style_errors
         return results
 
-    def _build_if_needed(self):
-        raise NotImplementedError('This method is not implemented.')
-
     def _run_test(self, test_node):
         raise NotImplementedError('This method is not implemented.')
+
+    def _build_if_needed(self):
+        return None
 
     def _code_style_errors(self):
         return None  # Empty implementation.

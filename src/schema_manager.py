@@ -24,17 +24,17 @@ class SchemaManager:
             Tags.HOMEWORKS_TAG: [{
                 Tags.NAME_TAG: str,
                 Tags.FOLDER_TAG: str,
-                Tags.EXERCISES_TAG: [{
+                Tags.TASTS_TAG: [{
                     Tags.NAME_TAG: str,
                     Tags.LANGUAGE_TAG: OneOf(LangTags.ALL),
                     Tags.FOLDER_TAG: str,
-                    Tags.OUTPUT_TYPE_TAG: OneOf(OutputTags.ALL),
+                    Optional(Tags.OUTPUT_TYPE_TAG,
+                             default=OutputTags.STRING): OneOf(OutputTags.ALL),
                     Optional(Tags.INPUT_TAG): str,
                     Optional(Tags.BINARY_NAME_TAG, default="main"): str,
-                    Optional(
-                        Tags.BUILD_TYPE_TAG,
-                        default=BuildTags.CMAKE): OneOf(BuildTags.ALL),
-                    Tags.TESTS_TAG: [{
+                    Optional(Tags.BUILD_TYPE_TAG,
+                             default=BuildTags.CMAKE): OneOf(BuildTags.ALL),
+                    Optional(Tags.TESTS_TAG): [{
                         Tags.NAME_TAG: str,
                         Tags.OUTPUT_TAG: Or(str, float, int),
                         Optional(Tags.INPUT_TAG): str
@@ -44,6 +44,7 @@ class SchemaManager:
         })
         yaml = YAML()
         yaml.explicit_start = True
+        yaml.indent(mapping=2, sequence=4, offset=2)
         with open(file_name, 'r') as stream:
             contents = yaml.load(stream)
             try:
@@ -82,5 +83,5 @@ class SchemaManager:
                 new_list.append(SchemaManager.__sanitize_value(val))
             return new_list
         if isinstance(input_var, Optional):
-            return str(input_var._schema) + " [OPTIONAL]"
+            return '~[optional]~ ' + str(input_var._schema)
         return str(input_var)

@@ -5,6 +5,7 @@ TABLE_TEMPLATE = "| {hw_name} | {task_name} | {test_name} | {result_sign} |\n"
 TABLE_SEPARATOR = "|---|---|---|:---:|\n"
 
 ERROR_TEMPLATE = """- `[{hw_name}][{task_name}][{test_name}]:`
+
 ```api-blueprint
 {error}
 ```

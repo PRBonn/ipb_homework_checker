@@ -5,7 +5,7 @@ class Tags:
     """List of tags available."""
     BINARY_NAME_TAG = 'binary_name'
     BUILD_TYPE_TAG = 'build_type'
-    EXERCISES_TAG = 'exercises'
+    TASTS_TAG = 'tasks'
     FOLDER_TAG = 'folder'
     HOMEWORKS_TAG = 'homeworks'
     INPUT_TAG = 'input_args'
@@ -33,7 +33,8 @@ class BuildTags:
 class LangTags:
     """Define tags for build types."""
     CPP = 'cpp'
-    ALL = [CPP]
+    BASH = 'bash'
+    ALL = [CPP, BASH]
 
 
 class OneOf:

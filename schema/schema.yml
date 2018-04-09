@@ -1,17 +1,17 @@
 ---
 folder: <class 'str'>
 homeworks:
-- exercises:
-  - binary_name [OPTIONAL]: <class 'str'>
-    build_type [OPTIONAL]: "Possible values: ['cmake', 'simple']"
-    folder: <class 'str'>
-    input_args [OPTIONAL]: <class 'str'>
-    language: "Possible values: ['cpp']"
+  - folder: <class 'str'>
     name: <class 'str'>
-    output_type: "Possible values: ['string', 'number']"
-    tests:
-    - expected_output: Or(<class 'str'>, <class 'float'>, <class 'int'>)
-      input_args [OPTIONAL]: <class 'str'>
-      name: <class 'str'>
-  folder: <class 'str'>
-  name: <class 'str'>
+    tasks:
+      - folder: <class 'str'>
+        language: "Possible values: ['cpp', 'bash']"
+        name: <class 'str'>
+        ~[optional]~ binary_name: <class 'str'>
+        ~[optional]~ build_type: "Possible values: ['cmake', 'simple']"
+        ~[optional]~ input_args: <class 'str'>
+        ~[optional]~ output_type: "Possible values: ['string', 'number']"
+        ~[optional]~ tests:
+          - expected_output: Or(<class 'str'>, <class 'float'>, <class 'int'>)
+            name: <class 'str'>
+            ~[optional]~ input_args: <class 'str'>

@@ -46,7 +46,7 @@ def convert_to(output_type, value):
     """Convert the value to a specified type."""
     try:
         if output_type == OutputTags.STRING:
-            result = str(value)
+            result = str(value).strip()
         if output_type == OutputTags.NUMBER:
             result = float(value)
     except ValueError as e:

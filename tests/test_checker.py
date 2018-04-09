@@ -39,6 +39,7 @@ class TestChecker(unittest.TestCase):
         self.assertFalse(results['Homework 1']
                          ['Task 3']['Test 2'].succeeded())
 
+        self.assertIn('Style Errors', results['Homework 1']['Task 4'])
         self.assertTrue(results['Homework 1']
                         ['Task 4']['Test 1'].succeeded())
         self.assertFalse(results['Homework 1']

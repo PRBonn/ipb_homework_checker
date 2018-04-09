@@ -14,6 +14,7 @@ log = logging.getLogger("GHC")
 
 class Checker:
     """Check homework."""
+    TESTS_TAG = 'tests'
 
     def __init__(self, job_file_path):
         """Initialize the checker from file."""

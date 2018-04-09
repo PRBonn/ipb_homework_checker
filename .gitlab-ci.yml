@@ -2,7 +2,7 @@ image: gitlab.ipb.uni-bonn.de:4567/global/docker-images/ipb_default
 
 test:
   before_script:
-  - pip3 install ruamel.yaml schema
+  - pip3 install ruamel.yaml schema cpplint
   script:
   - git submodule update --init
   - python3 -m unittest discover tests/

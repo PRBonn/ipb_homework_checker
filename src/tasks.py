@@ -42,6 +42,7 @@ class Task:
         if Tags.TESTS_TAG in task_node:
             self._test_nodes = task_node[Tags.TESTS_TAG]
         self._output_type = task_node[Tags.OUTPUT_TYPE_TAG]
+        self._curr_folder = curr_folder
         self._cwd = curr_folder
         if Tags.BINARY_NAME_TAG in task_node:
             self._binary_name = task_node[Tags.BINARY_NAME_TAG]
@@ -62,6 +63,9 @@ class Task:
         for test_node in self._test_nodes:
             test_result = self._run_test(test_node)
             results[test_node[Tags.NAME_TAG]] = test_result
+        style_errors = self._code_style_errors()
+        if style_errors:
+            results['Style Errors'] = style_errors
         return results
 
     def _build_if_needed(self):
@@ -69,6 +73,9 @@ class Task:
 
     def _run_test(self, test_node):
         raise NotImplementedError('This method is not implemented.')
+
+    def _code_style_errors(self):
+        return None  # Empty implementation.
 
 
 class CppTask(Task):
@@ -90,6 +97,16 @@ class CppTask(Task):
             return tools.run_command(CppTask.BUILD_CMD, cwd=self._cwd)
         return tools.run_command(CppTask.BUILD_CMD_SIMPLE.format(
             binary=self._binary_name), cwd=self._cwd)
+
+    def _code_style_errors(self):
+        """Check if code conforms to Google Style."""
+        command = 'cpplint --counting=detailed ' +\
+            '--filter=-legal,-readability/todo,-build/include_order' +\
+            ' $( find . -name "*.h" -o -name "*.cpp" | grep -vE "^./build/" )'
+        result = tools.run_command(command, cwd=self._curr_folder)
+        if result.stderr and "Total errors found" in result.stderr:
+            return result
+        return None
 
     def _run_test(self, test_node):
         input_str = ''

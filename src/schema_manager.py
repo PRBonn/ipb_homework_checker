@@ -4,7 +4,7 @@ import logging
 import operator
 from os import path
 from schema import Schema, SchemaError, Or, Optional
-from schema_tags import Tags, OutputTags, BuildTags, LangTags, OneOf
+from schema_tags import Tags, OutputTags, BuildTags, LangTags
 from ruamel.yaml import YAML
 from ruamel.yaml.comments import CommentedMap
 
@@ -24,20 +24,21 @@ class SchemaManager:
             Tags.HOMEWORKS_TAG: [{
                 Tags.NAME_TAG: str,
                 Tags.FOLDER_TAG: str,
-                Tags.TASTS_TAG: [{
+                Tags.TASKS_TAG: [{
                     Tags.NAME_TAG: str,
-                    Tags.LANGUAGE_TAG: OneOf(LangTags.ALL),
+                    Tags.LANGUAGE_TAG: Or(LangTags.CPP, LangTags.BASH),
                     Tags.FOLDER_TAG: str,
                     Optional(Tags.OUTPUT_TYPE_TAG,
-                             default=OutputTags.STRING): OneOf(OutputTags.ALL),
-                    Optional(Tags.INPUT_TAG): str,
+                             default=OutputTags.STRING): Or(OutputTags.STRING,
+                                                            OutputTags.NUMBER),
                     Optional(Tags.BINARY_NAME_TAG, default="main"): str,
                     Optional(Tags.BUILD_TYPE_TAG,
-                             default=BuildTags.CMAKE): OneOf(BuildTags.ALL),
+                             default=BuildTags.CMAKE): Or(BuildTags.CMAKE,
+                                                          BuildTags.SIMPLE),
                     Optional(Tags.TESTS_TAG): [{
                         Tags.NAME_TAG: str,
-                        Tags.OUTPUT_TAG: Or(str, float, int),
-                        Optional(Tags.INPUT_TAG): str
+                        Optional(Tags.INPUT_TAG): str,
+                        Optional(Tags.EXPECTED_OUTPUT_TAG): Or(str, float, int)
                     }]
                 }]
             }]
@@ -83,5 +84,15 @@ class SchemaManager:
                 new_list.append(SchemaManager.__sanitize_value(val))
             return new_list
         if isinstance(input_var, Optional):
-            return '~[optional]~ ' + str(input_var._schema)
+            return '~[optional]~ ' \
+                + SchemaManager.__sanitize_value(input_var._schema)
+        if isinstance(input_var, Or):
+            return 'Any of ' + str(
+                [SchemaManager.__sanitize_value(s) for s in input_var._args])
+        if input_var is str:
+            return 'str'
+        if input_var is float:
+            return 'float'
+        if input_var is int:
+            return 'int'
         return str(input_var)

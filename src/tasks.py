@@ -125,7 +125,7 @@ class CppTask(Task):
             run_result.stderr = error
             return run_result
         expected_output, error = tools.convert_to(
-            self._output_type, test_node[Tags.OUTPUT_TAG])
+            self._output_type, test_node[Tags.EXPECTED_OUTPUT_TAG])
         if our_output != expected_output:
             run_result.stderr = OUTPUT_MISMATCH_MESSAGE.format(
                 actual=our_output, input=input_str, expected=expected_output)
@@ -159,7 +159,7 @@ class BashTask(Task):
             run_result.stderr = error
             return run_result
         expected_output, error = tools.convert_to(
-            self._output_type, test_node[Tags.OUTPUT_TAG])
+            self._output_type, test_node[Tags.EXPECTED_OUTPUT_TAG])
         if our_output != expected_output:
             run_result.stderr = OUTPUT_MISMATCH_MESSAGE.format(
                 actual=our_output, input=input_str, expected=expected_output)

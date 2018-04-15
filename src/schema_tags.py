@@ -5,14 +5,15 @@ class Tags:
     """List of tags available."""
     BINARY_NAME_TAG = 'binary_name'
     BUILD_TYPE_TAG = 'build_type'
-    TASTS_TAG = 'tasks'
+    EXPECTED_OUTPUT_TAG = 'expected_output'
     FOLDER_TAG = 'folder'
     HOMEWORKS_TAG = 'homeworks'
     INPUT_TAG = 'input_args'
     LANGUAGE_TAG = 'language'
     NAME_TAG = 'name'
-    OUTPUT_TAG = 'expected_output'
     OUTPUT_TYPE_TAG = 'output_type'
+    RUN_GTESTS_TAG = 'run_gtest'
+    TASKS_TAG = 'tasks'
     TESTS_TAG = 'tests'
 
 

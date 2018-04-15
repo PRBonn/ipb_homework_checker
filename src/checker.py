@@ -38,7 +38,7 @@ class Checker:
                 continue
             hw_name = homework_node[Tags.NAME_TAG]
             results[hw_name] = {}
-            for task_node in homework_node[Tags.TASTS_TAG]:
+            for task_node in homework_node[Tags.TASKS_TAG]:
                 task = Task.from_yaml_node(task_node,
                                            current_folder)
                 if not task:

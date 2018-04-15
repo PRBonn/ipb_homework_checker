@@ -1,16 +1,18 @@
 ---
-folder: str
+folder: String value
 homeworks:
-  - folder: str
-    name: str
+  - folder: String value
+    name: String value
     tasks:
-      - folder: str
+      - folder: String value
         language: Any of ['cpp', 'bash']
-        name: str
-        ~[optional]~ binary_name: str
+        name: String value
+        ~[optional]~ binary_name: String value
         ~[optional]~ build_type: Any of ['cmake', 'simple']
         ~[optional]~ output_type: Any of ['string', 'number']
         ~[optional]~ tests:
-          - name: str
-            ~[optional]~ expected_output: Any of ['str', 'float', 'int']
-            ~[optional]~ input_args: str
+          - name: String value
+            ~[optional]~ expected_output: Any of ['String value', 'Float value', 'Int value']
+            ~[optional]~ inject_folder: String value
+            ~[optional]~ input_args: String value
+            ~[optional]~ run_google_tests: Boolean value

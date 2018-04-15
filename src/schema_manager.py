@@ -38,12 +38,15 @@ class SchemaManager:
                     Optional(Tags.TESTS_TAG): [{
                         Tags.NAME_TAG: str,
                         Optional(Tags.INPUT_TAG): str,
+                        Optional(Tags.INJECT_FOLDER_TAG): str,
+                        Optional(Tags.RUN_GTESTS_TAG, default=False): bool,
                         Optional(Tags.EXPECTED_OUTPUT_TAG): Or(str, float, int)
                     }]
                 }]
             }]
         })
         yaml = YAML()
+        yaml.width = 4096  # big enough value to prevent wrapping
         yaml.explicit_start = True
         yaml.indent(mapping=2, sequence=4, offset=2)
         with open(file_name, 'r') as stream:
@@ -90,9 +93,11 @@ class SchemaManager:
             return 'Any of ' + str(
                 [SchemaManager.__sanitize_value(s) for s in input_var._args])
         if input_var is str:
-            return 'str'
+            return 'String value'
         if input_var is float:
-            return 'float'
+            return 'Float value'
         if input_var is int:
-            return 'int'
+            return 'Int value'
+        if input_var is bool:
+            return 'Boolean value'
         return str(input_var)

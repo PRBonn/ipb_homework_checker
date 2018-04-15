@@ -18,8 +18,8 @@ class TestTools(unittest.TestCase):
     def test_pkg_name(self):
         """Pkg name test."""
         self.assertEqual(tools.PKG_NAME, 'homework_checker')
-        if path.basename(tools.ROOT_FOLDER):
-            self.assertEqual(path.basename(tools.ROOT_FOLDER),
+        if path.basename(tools.PROJECT_ROOT_FOLDER):
+            self.assertEqual(path.basename(tools.PROJECT_ROOT_FOLDER),
                              'generic-homework-checker')
 
     def test_convert_to(self):

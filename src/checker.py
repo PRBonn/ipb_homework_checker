@@ -18,10 +18,10 @@ class Checker:
 
     def __init__(self, job_file_path):
         """Initialize the checker from file."""
-        schema_manager = SchemaManager(job_file_path)
+        self._job_file_path = tools.expand_if_needed(job_file_path)
+        schema_manager = SchemaManager(self._job_file_path)
         self._base_node = schema_manager.validated_yaml
-
-        self._root_folder = tools.expand_if_needed(
+        self._checked_code_folder = tools.expand_if_needed(
             self._base_node[Tags.FOLDER_TAG])
         # The results of all tests will be kept here.
         self._results = {}
@@ -31,7 +31,7 @@ class Checker:
         results = {}
         for homework_node in self._base_node[Tags.HOMEWORKS_TAG]:
             current_folder = path.join(
-                self._root_folder, homework_node[Tags.FOLDER_TAG])
+                self._checked_code_folder, homework_node[Tags.FOLDER_TAG])
             if not path.exists(current_folder):
                 log.warning("Folder '%s' does not exist. Skiping.",
                             current_folder)
@@ -39,9 +39,11 @@ class Checker:
             hw_name = homework_node[Tags.NAME_TAG]
             results[hw_name] = {}
             for task_node in homework_node[Tags.TASKS_TAG]:
-                task = Task.from_yaml_node(task_node,
-                                           current_folder)
+                task = Task.from_yaml_node(task_node=task_node,
+                                           student_hw_folder=current_folder,
+                                           job_file=self._job_file_path)
                 if not task:
                     continue
                 results[hw_name][task.name] = task.check_all_tests()
+
         return results

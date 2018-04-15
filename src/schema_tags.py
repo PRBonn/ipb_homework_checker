@@ -8,11 +8,12 @@ class Tags:
     EXPECTED_OUTPUT_TAG = 'expected_output'
     FOLDER_TAG = 'folder'
     HOMEWORKS_TAG = 'homeworks'
+    INJECT_FOLDER_TAG = 'inject_folder'
     INPUT_TAG = 'input_args'
     LANGUAGE_TAG = 'language'
     NAME_TAG = 'name'
     OUTPUT_TYPE_TAG = 'output_type'
-    RUN_GTESTS_TAG = 'run_gtest'
+    RUN_GTESTS_TAG = 'run_google_tests'
     TASKS_TAG = 'tasks'
     TESTS_TAG = 'tests'
 

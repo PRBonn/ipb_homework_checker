@@ -9,8 +9,7 @@ import logging
 from schema_tags import OutputTags
 
 PKG_NAME = "homework_checker"
-ROOT_FOLDER = path.dirname(path.dirname(__file__))
-
+PROJECT_ROOT_FOLDER = path.abspath(path.dirname(path.dirname(__file__)))
 log = logging.getLogger("GHC")
 
 
@@ -39,7 +38,7 @@ def expand_if_needed(input_path):
         return new_path
     # The user could not be expanded, so we assume it is just another relative
     # path to the project directory. Mostly used for testing purposes here.
-    return path.join(ROOT_FOLDER, new_path)
+    return path.join(PROJECT_ROOT_FOLDER, new_path)
 
 
 def convert_to(output_type, value):

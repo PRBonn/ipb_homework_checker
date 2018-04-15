@@ -1,5 +1,5 @@
 ---
-folder: tests
+folder: tests/data/homework
 homeworks:
   - name: "Homework 1"
     folder: "homework_1"

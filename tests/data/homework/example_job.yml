@@ -76,8 +76,24 @@ homeworks:
           - name: Test 1  # Should fail as the binary returns a string
             expected_output: 4
 
-  - name: "Homework 3"  # Non existing homework
+  - name: "Homework 3"
     folder: "homework_3"
+    tasks:
+      - name: Google Tests
+        language: cpp
+        folder: .
+        tests:
+          - name: Just build
+            run_google_tests: True
+          - name: Inject pass
+            inject_folder: solutions/pass/tests
+            run_google_tests: True
+          - name: Inject fail
+            inject_folder: solutions/fail/tests
+            run_google_tests: True
+
+  - name: "Homework 4"  # Non existing homework
+    folder: "homework_4"
     tasks:
       - name: Irrelevant
         language: cpp

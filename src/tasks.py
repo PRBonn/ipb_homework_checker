@@ -98,6 +98,8 @@ class Task:
             return
         from shutil import move
         move(backed_up_folder, self._student_task_folder)
+        from os import rmdir
+        rmdir(self._backup_folder)
 
     def _run_test(self, test_node):
         raise NotImplementedError('This method is not implemented.')
@@ -112,7 +114,8 @@ class Task:
 class CppTask(Task):
     """Define a C++ Task."""
     CMAKE_BUILD_CMD = "cmake .. && make -j2"
-    CMAKE_BUILD_CMD_GTESTS = "cmake .. && make -j2 && ctest -VV"
+    REMAKE_AND_TEST = \
+        "make clean && rm -r * && cmake .. && make -j2 && ctest -VV"
     BUILD_CMD_SIMPLE = "clang++ -std=c++11 -o {binary} -Wall {binary}.cpp"
 
     def __init__(self, task_node, root_folder, job_file):
@@ -170,8 +173,9 @@ class CppTask(Task):
                 self._job_yaml_folder, test_node[Tags.INJECT_FOLDER_TAG])
             self._inject_folder('tests', inject_folder)
         tests_result = tools.run_command(
-            CppTask.CMAKE_BUILD_CMD_GTESTS, cwd=self._cwd)
-        self._revert_injections('tests')
+            CppTask.REMAKE_AND_TEST, cwd=self._cwd)
+        if Tags.INJECT_FOLDER_TAG in test_node:
+            self._revert_injections('tests')
         return tests_result
 
 

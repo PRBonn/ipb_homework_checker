@@ -13,13 +13,13 @@ from checker import Checker
 class TestChecker(unittest.TestCase):
     """Test the checker."""
 
-    def test_task_success(self):
+    def test_everything(self):
         """Check all homeworks and Tasks."""
         self.maxDiff = None
 
-        checker = Checker('tests/example_job.yml')
+        checker = Checker('tests/data/homework/example_job.yml')
         results = checker.check_homework()
-        self.assertEqual(len(results), 2)
+        self.assertEqual(len(results), 3)
         self.assertEqual(len(results['Homework 1']), 4)
         self.assertEqual(len(results['Homework 1']['Task 1']), 3)
         self.assertEqual(len(results['Homework 2']), 2)
@@ -53,3 +53,21 @@ class TestChecker(unittest.TestCase):
                          ['Task 2']['Test 1'].stderr, '')
         self.assertTrue(results['Homework 2']
                         ['Task 2']['Test 1'].succeeded())
+
+        self.assertIsNotNone(results['Homework 3']
+                             ['Google Tests']['Just build'])
+        self.assertTrue(results['Homework 3']
+                        ['Google Tests']['Just build'].succeeded())
+        self.assertIsNotNone(results['Homework 3']
+                             ['Google Tests']['Inject pass'])
+        self.assertEqual(results['Homework 3']
+                         ['Google Tests']['Inject pass'].stderr, '')
+        self.assertTrue(results['Homework 3']
+                        ['Google Tests']['Inject pass'].succeeded())
+        self.assertIsNotNone(results['Homework 3']
+                             ['Google Tests']['Inject fail'])
+        self.assertEqual(results['Homework 3']
+                         ['Google Tests']['Inject fail'].stderr,
+                         'Errors while running CTest\n')
+        self.assertFalse(results['Homework 3']
+                         ['Google Tests']['Inject fail'].succeeded())

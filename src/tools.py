@@ -9,8 +9,7 @@ import logging
 from schema_tags import OutputTags
 
 PKG_NAME = "homework_checker"
-ROOT_FOLDER = path.dirname(path.dirname(__file__))
-
+PROJECT_ROOT_FOLDER = path.abspath(path.dirname(path.dirname(__file__)))
 log = logging.getLogger("GHC")
 
 
@@ -39,7 +38,7 @@ def expand_if_needed(input_path):
         return new_path
     # The user could not be expanded, so we assume it is just another relative
     # path to the project directory. Mostly used for testing purposes here.
-    return path.join(ROOT_FOLDER, new_path)
+    return path.join(PROJECT_ROOT_FOLDER, new_path)
 
 
 def convert_to(output_type, value):
@@ -57,17 +56,42 @@ def convert_to(output_type, value):
 
 class CmdResult:
     """A small container for command result."""
+    SUCCESS = 0
+    FAILURE = 13
 
-    def __init__(self, stdout=None, stderr=None):
+    def __init__(self, returncode=None, stdout=None, stderr=None):
         """Initialize either stdout of stderr."""
-        self.stdout = stdout
-        self.stderr = stderr
+        self._returncode = returncode
+        self._stdout = stdout
+        self._stderr = stderr
 
     def succeeded(self):
         """Check if the command succeeded."""
+        if self.returncode is not None:
+            return self.returncode == CmdResult.SUCCESS
         if self.stderr:
             return False
         return True
+
+    @property
+    def returncode(self):
+        """Get returncode."""
+        return self._returncode
+
+    @property
+    def stdout(self):
+        """Get stdout."""
+        return self._stdout
+
+    @property
+    def stderr(self):
+        """Get stderr."""
+        return self._stderr
+
+    @stderr.setter
+    def stderr(self, value):
+        self._returncode = None  # We can't rely on returncode anymore
+        self._stderr = value
 
     @staticmethod
     def success():
@@ -103,10 +127,11 @@ def run_command(command, shell=True, cwd=path.curdir, env=environ):
                                  env=env,
                                  startupinfo=startupinfo,
                                  timeout=10)
-        return CmdResult(stdout=process.stdout.decode('utf-8'),
+        return CmdResult(returncode=process.returncode,
+                         stdout=process.stdout.decode('utf-8'),
                          stderr=process.stderr.decode('utf-8'))
     except subprocess.CalledProcessError as e:
         output_text = e.output.decode("utf-8")
         log.debug("command finished with code: %s", e.returncode)
         log.debug("command output: \n%s", output_text)
-        return CmdResult(stderr=output_text)
+        return CmdResult(returncode=e.returncode, stderr=output_text)

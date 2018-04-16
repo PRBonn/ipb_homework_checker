@@ -1,0 +1,13 @@
+---
+folder: tests/data/dummy/dummy_homework  # Target folder with code to be tested.
+homeworks:
+  - name: Homework 1
+    folder: hw_1
+    tasks:
+      - name: gtests
+        folder: .
+        language: cpp
+        tests:
+          - name: gtest_default
+            run_google_tests: True
+

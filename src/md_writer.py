@@ -4,11 +4,17 @@
 TABLE_TEMPLATE = "| {hw_name} | {task_name} | {test_name} | {result_sign} |\n"
 TABLE_SEPARATOR = "|---|---|---|:---:|\n"
 
-ERROR_TEMPLATE = """- `[{hw_name}][{task_name}][{test_name}]:`
+ERROR_TEMPLATE = """### `[{hw_name}][{task_name}][{test_name}]:`
 
+*stderr*:
 ```api-blueprint
-{error}
+{stderr}
 ```
+*stdout*:
+```
+{stdout}
+```
+--------
 """
 
 SEPARATOR = "--------\n"
@@ -68,4 +74,5 @@ class MdWriter:
         self._errors += ERROR_TEMPLATE.format(hw_name=hw_name,
                                               task_name=task_name,
                                               test_name=test_name,
-                                              error=test_result.stderr)
+                                              stderr=test_result.stderr,
+                                              stdout=test_result.stdout)

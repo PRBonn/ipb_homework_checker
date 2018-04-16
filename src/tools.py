@@ -106,7 +106,7 @@ class CmdResult:
         return self.stdout.strip()
 
 
-def run_command(command, shell=True, cwd=path.curdir, env=environ):
+def run_command(command, shell=True, cwd=path.curdir, env=environ, timeout=20):
     """Run a generic command in a subprocess.
 
     Args:
@@ -126,7 +126,7 @@ def run_command(command, shell=True, cwd=path.curdir, env=environ):
                                  cwd=cwd,
                                  env=env,
                                  startupinfo=startupinfo,
-                                 timeout=10)
+                                 timeout=timeout)
         return CmdResult(returncode=process.returncode,
                          stdout=process.stdout.decode('utf-8'),
                          stderr=process.stderr.decode('utf-8'))

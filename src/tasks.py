@@ -129,7 +129,9 @@ class CppTask(Task):
 
     def _build_if_needed(self):
         if self._build_type == BuildTags.CMAKE:
-            return tools.run_command(CppTask.CMAKE_BUILD_CMD, cwd=self._cwd)
+            return tools.run_command(CppTask.CMAKE_BUILD_CMD,
+                                     cwd=self._cwd,
+                                     timeout=60)
         return tools.run_command(CppTask.BUILD_CMD_SIMPLE.format(
             binary=self._binary_name), cwd=self._cwd)
 
@@ -173,7 +175,7 @@ class CppTask(Task):
                 self._job_yaml_folder, test_node[Tags.INJECT_FOLDER_TAG])
             self._inject_folder('tests', inject_folder)
         tests_result = tools.run_command(
-            CppTask.REMAKE_AND_TEST, cwd=self._cwd)
+            CppTask.REMAKE_AND_TEST, cwd=self._cwd, timeout=60)
         if Tags.INJECT_FOLDER_TAG in test_node:
             self._revert_injections('tests')
         return tests_result

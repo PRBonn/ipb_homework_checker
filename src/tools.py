@@ -51,7 +51,8 @@ def convert_to(output_type, value):
     except ValueError as e:
         log.error('Exception: %s.', e)
         return None, str(e)
-    return result, "Output has wrong format."
+    return result, "Output has wrong format. Cannot convert to {}.".format(
+        output_type)
 
 
 class CmdResult:

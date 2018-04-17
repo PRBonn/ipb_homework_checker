@@ -43,6 +43,8 @@ def expand_if_needed(input_path):
 
 def convert_to(output_type, value):
     """Convert the value to a specified type."""
+    if not value:
+        return None, "No value. Cannot convert to '{}'.".format(output_type)
     try:
         if output_type == OutputTags.STRING:
             result = str(value).strip()
@@ -51,8 +53,7 @@ def convert_to(output_type, value):
     except ValueError as e:
         log.error('Exception: %s.', e)
         return None, str(e)
-    return result, "Output has wrong format. Cannot convert to {}.".format(
-        output_type)
+    return result, "OK"
 
 
 class CmdResult:

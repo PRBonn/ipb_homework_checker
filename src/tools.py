@@ -5,11 +5,14 @@ from os import environ
 import tempfile
 import subprocess
 import logging
+import datetime
 
 from schema_tags import OutputTags
 
 PKG_NAME = "homework_checker"
 PROJECT_ROOT_FOLDER = path.abspath(path.dirname(path.dirname(__file__)))
+MAX_DATE_STR = datetime.datetime.max.strftime("%Y.%m.%d %H:%M:%S")
+
 log = logging.getLogger("GHC")
 
 

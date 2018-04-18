@@ -37,6 +37,7 @@ class Checker:
                             current_folder)
                 continue
             hw_name = homework_node[Tags.NAME_TAG]
+            deadline_str = homework_node[Tags.DEADLINE_TAG]
             results[hw_name] = {}
             for task_node in homework_node[Tags.TASKS_TAG]:
                 task = Task.from_yaml_node(task_node=task_node,

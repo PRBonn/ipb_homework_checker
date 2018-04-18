@@ -3,6 +3,7 @@ import sys
 import logging
 import operator
 from os import path
+from tools import MAX_DATE_STR
 from schema import Schema, SchemaError, Or, Optional
 from schema_tags import Tags, OutputTags, BuildTags, LangTags
 from ruamel.yaml import YAML
@@ -24,6 +25,8 @@ class SchemaManager:
             Tags.HOMEWORKS_TAG: [{
                 Tags.NAME_TAG: str,
                 Tags.FOLDER_TAG: str,
+                Optional(Tags.DEADLINE_TAG,
+                         default=MAX_DATE_STR): str,
                 Tags.TASKS_TAG: [{
                     Tags.NAME_TAG: str,
                     Tags.LANGUAGE_TAG: Or(LangTags.CPP, LangTags.BASH),

@@ -43,6 +43,8 @@ class Checker:
             deadline_datetime = datetime.strptime(deadline_str,
                                                   tools.DATE_PATTERN)
             if datetime.now() > deadline_datetime:
+                print("now", datetime.now())
+                print("deadline", deadline_datetime)
                 results[hw_name][tools.EXPIRED_TAG] = True
             for task_node in homework_node[Tags.TASKS_TAG]:
                 task = Task.from_yaml_node(task_node=task_node,

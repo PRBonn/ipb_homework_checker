@@ -42,8 +42,6 @@ class Checker:
             deadline_str = homework_node[Tags.DEADLINE_TAG]
             deadline_datetime = datetime.strptime(deadline_str,
                                                   tools.DATE_PATTERN)
-            print("now", datetime.now())
-            print("deadline", deadline_datetime)
             if datetime.now() > deadline_datetime:
                 results[hw_name][tools.EXPIRED_TAG] = True
             for task_node in homework_node[Tags.TASKS_TAG]:

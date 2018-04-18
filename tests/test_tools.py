@@ -35,3 +35,7 @@ class TestTools(unittest.TestCase):
         output, error = tools.convert_to(OutputTags.NUMBER, "3.14")
         self.assertEqual(output, 3.14)
         self.assertEqual(error, "OK")
+
+    def test_max_date(self):
+        """Make sure we can rely on max date."""
+        self.assertEqual(tools.MAX_DATE_STR, "9999-12-31 23:59:59")

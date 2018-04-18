@@ -4,6 +4,7 @@ from os import path
 
 import logging
 import tools
+from datetime import datetime
 from schema_manager import SchemaManager
 from schema_tags import Tags
 from tasks import Task
@@ -38,6 +39,11 @@ class Checker:
                 continue
             hw_name = homework_node[Tags.NAME_TAG]
             results[hw_name] = {}
+            deadline_str = homework_node[Tags.DEADLINE_TAG]
+            deadline_datetime = datetime.strptime(deadline_str,
+                                                  tools.DATE_PATTERN)
+            if datetime.now() > deadline_datetime:
+                results[hw_name][tools.EXPIRED_TAG] = True
             for task_node in homework_node[Tags.TASKS_TAG]:
                 task = Task.from_yaml_node(task_node=task_node,
                                            student_hw_folder=current_folder,

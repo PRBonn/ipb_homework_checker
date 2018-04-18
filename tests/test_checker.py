@@ -8,6 +8,7 @@ sys.path.append('src')
 sys.path.append('../src')
 
 from checker import Checker
+import tools
 
 
 class TestChecker(unittest.TestCase):
@@ -71,3 +72,4 @@ class TestChecker(unittest.TestCase):
                          'Errors while running CTest\n')
         self.assertFalse(results['Homework 3']
                          ['Google Tests']['Inject fail'].succeeded())
+        self.assertIn(tools.EXPIRED_TAG, results['Homework 3'])

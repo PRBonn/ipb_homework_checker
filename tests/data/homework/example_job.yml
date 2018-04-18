@@ -78,6 +78,7 @@ homeworks:
 
   - name: "Homework 3"
     folder: "homework_3"
+    submit_by: "2018-04-18 00:00:00"
     tasks:
       - name: Google Tests
         language: cpp

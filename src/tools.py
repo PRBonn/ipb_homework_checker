@@ -11,7 +11,10 @@ from schema_tags import OutputTags
 
 PKG_NAME = "homework_checker"
 PROJECT_ROOT_FOLDER = path.abspath(path.dirname(path.dirname(__file__)))
-MAX_DATE_STR = datetime.datetime.max.strftime("%Y.%m.%d %H:%M:%S")
+DATE_PATTERN = "%Y-%m-%d %H:%M:%S"
+MAX_DATE_STR = datetime.datetime.max.strftime(DATE_PATTERN)
+
+EXPIRED_TAG = "expired"
 
 log = logging.getLogger("GHC")
 

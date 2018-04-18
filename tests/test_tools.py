@@ -38,4 +38,4 @@ class TestTools(unittest.TestCase):
 
     def test_max_date(self):
         """Make sure we can rely on max date."""
-        self.assertEqual(tools.MAX_DATE_STR, "9999.12.31 23:59:59")
+        self.assertEqual(tools.MAX_DATE_STR, "9999-12-31 23:59:59")

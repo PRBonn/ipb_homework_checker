@@ -90,6 +90,8 @@ class SchemaManager:
                 new_list.append(SchemaManager.__sanitize_value(val))
             return new_list
         if isinstance(input_var, Optional):
+            if input_var._schema == Tags.DEADLINE_TAG:
+                return SchemaManager.__sanitize_value(input_var._schema)
             return '~[optional]~ ' \
                 + SchemaManager.__sanitize_value(input_var._schema)
         if isinstance(input_var, Or):

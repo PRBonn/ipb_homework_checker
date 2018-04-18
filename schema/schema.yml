@@ -3,6 +3,7 @@ folder: String value
 homeworks:
   - folder: String value
     name: String value
+    submit_by: String value
     tasks:
       - folder: String value
         language: Any of ['cpp', 'bash']

@@ -1,5 +1,6 @@
 """Write test results into a markdown file."""
 
+from tools import EXPIRED_TAG
 
 TABLE_TEMPLATE = "| {hw_name} | {task_name} | {test_name} | {result_sign} |\n"
 TABLE_SEPARATOR = "|---|---|---|:---:|\n"
@@ -40,7 +41,13 @@ class MdWriter:
         """Update the table of completion."""
         for hw_name, hw_dict in sorted(hw_results.items()):
             need_hw_name = True
+            if EXPIRED_TAG in hw_dict:
+                hw_name += " `[PAST DEADLINE]`"
             for task_name, ex_dict in sorted(hw_dict.items()):
+                if task_name == EXPIRED_TAG:
+                    # Maybe there is a better way to handle this, but I don't
+                    # want to dig into this right now.
+                    continue
                 need_task_name = True
                 for test_name, test_result in sorted(ex_dict.items()):
                     result_sign = SUCCESS_TAG \

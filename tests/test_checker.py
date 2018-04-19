@@ -23,7 +23,7 @@ class TestChecker(unittest.TestCase):
         self.assertEqual(len(results), 3)
         self.assertEqual(len(results['Homework 1']), 4)
         self.assertEqual(len(results['Homework 1']['Task 1']), 3)
-        self.assertEqual(len(results['Homework 2']), 2)
+        self.assertEqual(len(results['Homework 2']), 3)
         self.assertEqual(results['Homework 1']
                          ['Task 1']['Test 1'].stderr, "")
         self.assertTrue(results['Homework 1']
@@ -54,6 +54,7 @@ class TestChecker(unittest.TestCase):
                          ['Task 2']['Test 1'].stderr, '')
         self.assertTrue(results['Homework 2']
                         ['Task 2']['Test 1'].succeeded())
+        self.assertIn(tools.EXPIRED_TAG, results['Homework 2'])
 
         self.assertIsNotNone(results['Homework 3']
                              ['Google Tests']['Just build'])
@@ -72,4 +73,3 @@ class TestChecker(unittest.TestCase):
                          'Errors while running CTest\n')
         self.assertFalse(results['Homework 3']
                          ['Google Tests']['Inject fail'].succeeded())
-        self.assertIn(tools.EXPIRED_TAG, results['Homework 3'])

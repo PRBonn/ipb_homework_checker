@@ -18,6 +18,12 @@ ERROR_TEMPLATE = """### `[{hw_name}][{task_name}][{test_name}]:`
 --------
 """
 
+EXPIRED_TEMPLATE = """
+
+### `[{hw_name}][Past Deadline][Errors Hidden]`
+
+"""
+
 SEPARATOR = "--------\n"
 FINISHING_NOTE = "With 💙 from homework bot 🤖\n"
 
@@ -41,24 +47,32 @@ class MdWriter:
         """Update the table of completion."""
         for hw_name, hw_dict in sorted(hw_results.items()):
             need_hw_name = True
+            expired = False
             if EXPIRED_TAG in hw_dict:
-                hw_name += " `[PAST DEADLINE]`"
+                expired = True
             for task_name, ex_dict in sorted(hw_dict.items()):
                 if task_name == EXPIRED_TAG:
                     # Maybe there is a better way to handle this, but I don't
-                    # want to dig into this right now.
+                    # want to dig into this right now. We have added the
+                    # EXPIRED_TAG to this dict and need to ignore it here.
                     continue
                 need_task_name = True
                 for test_name, test_result in sorted(ex_dict.items()):
                     result_sign = SUCCESS_TAG \
                         if test_result.succeeded() \
                         else FAILED_TAG
+                    extended_hw_name = hw_name + " `[PAST DEADLINE]`" \
+                        if expired else hw_name
                     self._md_table += TABLE_TEMPLATE.format(
-                        hw_name=hw_name if need_hw_name else '',
+                        hw_name=extended_hw_name if need_hw_name else '',
                         task_name=task_name if need_task_name else '',
                         test_name=test_name,
                         result_sign=result_sign)
-                    self._add_error(hw_name, task_name, test_name, test_result)
+                    self._add_error(hw_name,
+                                    task_name,
+                                    test_name,
+                                    test_result,
+                                    expired)
                     need_hw_name = False  # We only print homework name once.
                     need_task_name = False  # We only print Task name once.
 
@@ -74,9 +88,12 @@ class MdWriter:
         with open(md_file_path, 'w') as md_file:
             md_file.write(md_file_content)
 
-    def _add_error(self, hw_name, task_name, test_name, test_result):
+    def _add_error(self, hw_name, task_name, test_name, test_result, expired):
         """Add a section of errors to the md file."""
         if test_result.succeeded():
+            return
+        if expired:
+            self._errors += EXPIRED_TEMPLATE.format(hw_name=hw_name)
             return
         self._errors += ERROR_TEMPLATE.format(hw_name=hw_name,
                                               task_name=task_name,

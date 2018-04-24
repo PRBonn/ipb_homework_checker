@@ -52,13 +52,16 @@ class Task:
             self._test_nodes = task_node[Tags.TESTS_TAG]
         else:
             self._test_nodes = []  # Sometimes we don't have tests.
+        self._task_node = task_node
 
     def check_all_tests(self):
         """Iterate over the tests and check them."""
         # Generate empty results.
         results = {}
         # Build the source if this is needed.
+        injected_folders = self.__inject_folders_if_needed(self._task_node)
         build_result = self._build_if_needed()
+        self.__restore_injected_folders(self._task_node, injected_folders)
         if build_result:
             results['Build Succeeded'] = build_result
             if not build_result.succeeded():
@@ -66,30 +69,30 @@ class Task:
                 return results
         # The build is either not needed or succeeded. Continue testing.
         for test_node in self._test_nodes:
-            self.__inject_folders_if_needed(test_node)
+            injected_folders = self.__inject_folders_if_needed(test_node)
             test_result = self._run_test(test_node)
-            self.__restore_injected_folders(test_node)
+            self.__restore_injected_folders(test_node, injected_folders)
             results[test_node[Tags.NAME_TAG]] = test_result
         style_errors = self._code_style_errors()
         if style_errors:
             results['Style Errors'] = style_errors
         return results
 
-    def __inject_folders_if_needed(self, test_node):
-        if Tags.INJECT_FOLDER_TAG in test_node:
+    def __inject_folders_if_needed(self, node):
+        injected_folders = []
+        if Tags.INJECT_FOLDER_TAG in node:
             # Inject all needed folders.
-            self._injected_folders = []
-            for folder in test_node[Tags.INJECT_FOLDER_TAG]:
+            for folder in node[Tags.INJECT_FOLDER_TAG]:
                 inject_folder = path.join(self._job_yaml_folder, folder)
                 folder_name = path.basename(folder)
                 self._inject_folder(folder_name, inject_folder)
-                self._injected_folders.append(folder_name)
+                injected_folders.append(folder_name)
+        return injected_folders
 
-    def __restore_injected_folders(self, test_node):
-        if Tags.INJECT_FOLDER_TAG in test_node:
-            for folder in self._injected_folders:
+    def __restore_injected_folders(self, node, injected_folders):
+        if Tags.INJECT_FOLDER_TAG in node:
+            for folder in injected_folders:
                 self._revert_injections(folder)
-            self._injected_folders = []
             from os import rmdir
             rmdir(self._backup_folder)
 

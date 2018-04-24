@@ -38,6 +38,7 @@ class SchemaManager:
                     Optional(Tags.BUILD_TYPE_TAG,
                              default=BuildTags.CMAKE): Or(BuildTags.CMAKE,
                                                           BuildTags.SIMPLE),
+                    Optional(Tags.INJECT_FOLDER_TAG): [str],
                     Optional(Tags.TESTS_TAG): [{
                         Tags.NAME_TAG: str,
                         Optional(Tags.INPUT_TAG): str,

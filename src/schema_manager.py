@@ -38,7 +38,7 @@ class SchemaManager:
                     Optional(Tags.TESTS_TAG): [{
                         Tags.NAME_TAG: str,
                         Optional(Tags.INPUT_TAG): str,
-                        Optional(Tags.INJECT_FOLDER_TAG): str,
+                        Optional(Tags.INJECT_FOLDER_TAG): [str],
                         Optional(Tags.RUN_GTESTS_TAG, default=False): bool,
                         Optional(Tags.EXPECTED_OUTPUT_TAG): Or(str, float, int)
                     }]

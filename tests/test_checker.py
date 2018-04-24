@@ -71,3 +71,6 @@ class TestChecker(unittest.TestCase):
                          'Errors while running CTest\n')
         self.assertFalse(results['Homework 3']
                          ['Google Tests']['Inject fail'].succeeded())
+
+        self.assertTrue(results['Homework 3']
+                        ['Bash with many folders']['ls'].succeeded())

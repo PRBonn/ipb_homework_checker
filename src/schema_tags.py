@@ -9,7 +9,7 @@ class Tags:
     DEADLINE_TAG = 'submit_by'
     FOLDER_TAG = 'folder'
     HOMEWORKS_TAG = 'homeworks'
-    INJECT_FOLDER_TAG = 'inject_folder'
+    INJECT_FOLDER_TAG = 'inject_folders'
     INPUT_TAG = 'input_args'
     LANGUAGE_TAG = 'language'
     NAME_TAG = 'name'

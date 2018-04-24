@@ -14,6 +14,7 @@ homeworks:
         ~[optional]~ tests:
           - name: String value
             ~[optional]~ expected_output: Any of ['String value', 'Float value', 'Int value']
-            ~[optional]~ inject_folder: String value
+            ~[optional]~ inject_folders:
+              - String value
             ~[optional]~ input_args: String value
             ~[optional]~ run_google_tests: Boolean value

@@ -66,12 +66,32 @@ class Task:
                 return results
         # The build is either not needed or succeeded. Continue testing.
         for test_node in self._test_nodes:
+            self.__inject_folders_if_needed(test_node)
             test_result = self._run_test(test_node)
+            self.__restore_injected_folders(test_node)
             results[test_node[Tags.NAME_TAG]] = test_result
         style_errors = self._code_style_errors()
         if style_errors:
             results['Style Errors'] = style_errors
         return results
+
+    def __inject_folders_if_needed(self, test_node):
+        if Tags.INJECT_FOLDER_TAG in test_node:
+            # Inject all needed folders.
+            self._injected_folders = []
+            for folder in test_node[Tags.INJECT_FOLDER_TAG]:
+                inject_folder = path.join(self._job_yaml_folder, folder)
+                folder_name = path.basename(folder)
+                self._inject_folder(folder_name, inject_folder)
+                self._injected_folders.append(folder_name)
+
+    def __restore_injected_folders(self, test_node):
+        if Tags.INJECT_FOLDER_TAG in test_node:
+            for folder in self._injected_folders:
+                self._revert_injections(folder)
+            self._injected_folders = []
+            from os import rmdir
+            rmdir(self._backup_folder)
 
     def _inject_folder(self, dest_folder, inject_folder):
         full_path_from = inject_folder
@@ -98,8 +118,6 @@ class Task:
             return
         from shutil import move
         move(backed_up_folder, self._student_task_folder)
-        from os import rmdir
-        rmdir(self._backup_folder)
 
     def _run_test(self, test_node):
         raise NotImplementedError('This method is not implemented.')
@@ -148,7 +166,8 @@ class CppTask(Task):
 
     def _run_test(self, test_node):
         if test_node[Tags.RUN_GTESTS_TAG]:
-            return self.__run_google_test(test_node)
+            return tools.run_command(
+                CppTask.REMAKE_AND_TEST, cwd=self._cwd, timeout=60)
         input_str = ''
         if Tags.INPUT_TAG in test_node:
             input_str = test_node[Tags.INPUT_TAG]
@@ -169,17 +188,6 @@ class CppTask(Task):
             run_result.stderr = OUTPUT_MISMATCH_MESSAGE.format(
                 actual=our_output, input=input_str, expected=expected_output)
         return run_result
-
-    def __run_google_test(self, test_node):
-        if Tags.INJECT_FOLDER_TAG in test_node:
-            inject_folder = path.join(
-                self._job_yaml_folder, test_node[Tags.INJECT_FOLDER_TAG])
-            self._inject_folder('tests', inject_folder)
-        tests_result = tools.run_command(
-            CppTask.REMAKE_AND_TEST, cwd=self._cwd, timeout=60)
-        if Tags.INJECT_FOLDER_TAG in test_node:
-            self._revert_injections('tests')
-        return tests_result
 
 
 class BashTask(Task):

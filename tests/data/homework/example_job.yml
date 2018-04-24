@@ -82,16 +82,31 @@ homeworks:
     tasks:
       - name: Google Tests
         language: cpp
-        folder: .
+        folder: cpptests
         tests:
           - name: Just build
             run_google_tests: True
           - name: Inject pass
-            inject_folder: solutions/pass/tests
             run_google_tests: True
+            inject_folders:
+              - solutions/pass/tests
           - name: Inject fail
-            inject_folder: solutions/fail/tests
             run_google_tests: True
+            inject_folders:
+              - solutions/fail/tests
+      - name: Bash with many folders
+        language: bash
+        folder: bashtests
+        binary_name: ls_me
+        tests:
+          - name: ls
+            inject_folders: # Just multiple folders.
+              - solutions/fail
+              - solutions/pass
+            expected_output: |  # This maintains whitespaces.
+              fail
+              ls_me.sh
+              pass
 
   - name: "Homework 4"  # Non existing homework
     folder: "homework_4"

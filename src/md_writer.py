@@ -8,7 +8,7 @@ TABLE_SEPARATOR = "|---|---|---|:---:|\n"
 ERROR_TEMPLATE = """### `[{hw_name}][{task_name}][{test_name}]:`
 
 *stderr*:
-```api-blueprint
+```apiblueprint
 {stderr}
 ```
 *stdout*:

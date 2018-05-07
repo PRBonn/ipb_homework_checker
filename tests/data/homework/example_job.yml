@@ -8,6 +8,7 @@ homeworks:
         language: cpp         # Type of the Task.
         folder: task_1        # Name of the folder containing the Task.
         output_type: string   # We expect a string as an output.
+        command: ./main
         tests:                # An Task can have multiple tests.
           - name: Test 1
             expected_output: > # this wraps into a long string, no line breaks.
@@ -25,7 +26,7 @@ homeworks:
         language: cpp
         folder: task_3
         output_type: number
-        binary_name: sum_numbers
+        command: ./sum_numbers
         tests:
           - name: Test 1
             input_args: 2 2
@@ -61,7 +62,7 @@ homeworks:
       - name: Task 2
         language: bash
         folder: task_2
-        binary_name: test_me
+        command: ./test_me
         tests:
           - name: Test 1
             expected_output: |  # This maintains whitespaces.
@@ -97,7 +98,7 @@ homeworks:
       - name: Bash with many folders
         language: bash
         folder: bashtests
-        binary_name: ls_me
+        command: ./ls_me
         tests:
           - name: ls
             inject_folders: # Just multiple folders.

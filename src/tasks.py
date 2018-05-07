@@ -45,7 +45,7 @@ class Task:
         self._output_type = task_node[Tags.OUTPUT_TYPE_TAG]
         self._cwd = student_task_folder
         self._student_task_folder = student_task_folder
-        self._binary_name = task_node[Tags.BINARY_NAME_TAG]
+        self._binary_name = task_node[Tags.CMD_TAG]
         self._backup_folder = path.join(
             student_task_folder, Task.BACKUP_FOLDER)
         if Tags.TESTS_TAG in task_node:
@@ -174,7 +174,7 @@ class CppTask(Task):
         input_str = ''
         if Tags.INPUT_TAG in test_node:
             input_str = test_node[Tags.INPUT_TAG]
-        run_cmd = "./{binary_name} {args}".format(
+        run_cmd = "{binary_name} {args}".format(
             binary_name=self._binary_name, args=input_str)
         run_result = tools.run_command(run_cmd, cwd=self._cwd)
         if not run_result.succeeded():

@@ -3,7 +3,7 @@
 
 class Tags:
     """List of tags available."""
-    BINARY_NAME_TAG = 'binary_name'
+    CMD_TAG = 'command'
     BUILD_TYPE_TAG = 'build_type'
     EXPECTED_OUTPUT_TAG = 'expected_output'
     DEADLINE_TAG = 'submit_by'

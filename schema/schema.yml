@@ -8,11 +8,12 @@ homeworks:
       - folder: String value
         language: Any of ['cpp', 'bash']
         name: String value
+        ~[optional]~ binary_name: String value
         ~[optional]~ build_type: Any of ['cmake', 'simple']
-        ~[optional]~ command: String value
         ~[optional]~ inject_folders:
           - String value
         ~[optional]~ output_type: Any of ['string', 'number']
+        ~[optional]~ pipe_through: String value
         ~[optional]~ tests:
           - name: String value
             ~[optional]~ expected_output: Any of ['String value', 'Float value', 'Int value']

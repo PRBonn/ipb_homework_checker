@@ -34,6 +34,7 @@ class SchemaManager:
                     Optional(Tags.OUTPUT_TYPE_TAG,
                              default=OutputTags.STRING): Or(OutputTags.STRING,
                                                             OutputTags.NUMBER),
+                    Optional(Tags.COMPILER_FLAGS_TAG, default="-Wall"): str,
                     Optional(Tags.BINARY_NAME_TAG, default="main"): str,
                     Optional(Tags.PIPE_TAG, default=""): str,
                     Optional(Tags.BUILD_TYPE_TAG,

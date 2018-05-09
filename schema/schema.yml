@@ -10,6 +10,7 @@ homeworks:
         name: String value
         ~[optional]~ binary_name: String value
         ~[optional]~ build_type: Any of ['cmake', 'simple']
+        ~[optional]~ compiler_flags: String value
         ~[optional]~ inject_folders:
           - String value
         ~[optional]~ output_type: Any of ['string', 'number']

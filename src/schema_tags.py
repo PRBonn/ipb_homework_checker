@@ -3,11 +3,11 @@
 
 class Tags:
     """List of tags available."""
-    PIPE_TAG = 'pipe_through'
     BINARY_NAME_TAG = 'binary_name'
     BUILD_TYPE_TAG = 'build_type'
-    EXPECTED_OUTPUT_TAG = 'expected_output'
+    COMPILER_FLAGS_TAG = 'compiler_flags'
     DEADLINE_TAG = 'submit_by'
+    EXPECTED_OUTPUT_TAG = 'expected_output'
     FOLDER_TAG = 'folder'
     HOMEWORKS_TAG = 'homeworks'
     INJECT_FOLDER_TAG = 'inject_folders'
@@ -15,6 +15,7 @@ class Tags:
     LANGUAGE_TAG = 'language'
     NAME_TAG = 'name'
     OUTPUT_TYPE_TAG = 'output_type'
+    PIPE_TAG = 'pipe_through'
     RUN_GTESTS_TAG = 'run_google_tests'
     TASKS_TAG = 'tasks'
     TESTS_TAG = 'tests'

@@ -138,11 +138,13 @@ class CppTask(Task):
     CMAKE_BUILD_CMD = "cmake .. && make -j2"
     REMAKE_AND_TEST = \
         "make clean && rm -r * && cmake .. && make -j2 && ctest -VV"
-    BUILD_CMD_SIMPLE = "clang++ -std=c++11 -o {binary} -Wall {binary}.cpp"
+    BUILD_CMD_SIMPLE = \
+        "clang++ -std=c++11 -o {binary} {compiler_flags} {binary}.cpp"
 
     def __init__(self, task_node, root_folder, job_file):
         """Initialize the C++ Task."""
         super().__init__(task_node, root_folder, job_file)
+        self._compiler_flags = task_node[Tags.COMPILER_FLAGS_TAG]
         self._build_type = task_node[Tags.BUILD_TYPE_TAG]
         if self._build_type == BuildTags.CMAKE:
             # The cmake project will always work from build folder.
@@ -154,8 +156,11 @@ class CppTask(Task):
             return tools.run_command(CppTask.CMAKE_BUILD_CMD,
                                      cwd=self._cwd,
                                      timeout=60)
-        return tools.run_command(CppTask.BUILD_CMD_SIMPLE.format(
-            binary=self._binary_name), cwd=self._cwd)
+        return tools.run_command(
+            CppTask.BUILD_CMD_SIMPLE.format(
+                binary=self._binary_name,
+                compiler_flags=self._compiler_flags),
+            cwd=self._cwd)
 
     def _code_style_errors(self):
         """Check if code conforms to Google Style."""

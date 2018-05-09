@@ -99,7 +99,7 @@ homeworks:
         language: bash
         folder: bashtests
         binary_name: ls_me
-        pipe_through: head -n 2
+        pipe_through: "| head -n 2"
         tests:
           - name: ls
             inject_folders: # Just multiple folders.

@@ -178,7 +178,7 @@ class CppTask(Task):
         run_cmd = "./{binary_name} {args}".format(
             binary_name=self._binary_name, args=input_str)
         if self._pipe_through:
-            run_cmd += ' | ' + self._pipe_through
+            run_cmd += ' ' + self._pipe_through
         run_result = tools.run_command(run_cmd, cwd=self._cwd)
         if not run_result.succeeded():
             return run_result
@@ -214,7 +214,7 @@ class BashTask(Task):
         run_cmd = BashTask.RUN_CMD.format(
             binary_name=self._binary_name, args=input_str)
         if self._pipe_through:
-            run_cmd += ' | ' + self._pipe_through
+            run_cmd += ' ' + self._pipe_through
         run_result = tools.run_command(run_cmd, cwd=self._cwd)
         if not run_result.succeeded():
             return run_result

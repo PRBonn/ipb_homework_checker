@@ -161,7 +161,8 @@ class CppTask(Task):
         """Check if code conforms to Google Style."""
         command = 'cpplint --counting=detailed ' +\
             '--filter=-legal,-readability/todo,' +\
-            '-build/include_order,-runtime/threadsafe_fn' +\
+            '-build/include_order,-runtime/threadsafe_fn,' +\
+            '-runtime/arrays' +\
             ' $( find . -name "*.h" -o -name "*.cpp" | grep -vE "^./build/" )'
         result = tools.run_command(command, cwd=self._student_task_folder)
         if result.stderr and "Total errors found" in result.stderr:

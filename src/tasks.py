@@ -15,6 +15,9 @@ OUTPUT_MISMATCH_MESSAGE = """Given input: '{input}'
 Your output '{actual}'
 Expected output: '{expected}'"""
 
+BUILD_SUCCESS_TAG = "0. Build succeeded"
+STYLE_ERROR_TAG = "0. Style errors"
+
 
 class Task:
     """Define an abstract Task."""
@@ -64,7 +67,7 @@ class Task:
         build_result = self._build_if_needed()
         self.__restore_injected_folders(self._task_node, injected_folders)
         if build_result:
-            results['Build Succeeded'] = build_result
+            results[BUILD_SUCCESS_TAG] = build_result
             if not build_result.succeeded():
                 # The build has failed, so no further testing needed.
                 return results
@@ -76,7 +79,7 @@ class Task:
             results[test_node[Tags.NAME_TAG]] = test_result
         style_errors = self._code_style_errors()
         if style_errors:
-            results['Style Errors'] = style_errors
+            results[STYLE_ERROR_TAG] = style_errors
         return results
 
     def __inject_folders_if_needed(self, node):
@@ -139,7 +142,7 @@ class CppTask(Task):
     REMAKE_AND_TEST = \
         "make clean && rm -r * && cmake .. && make -j2 && ctest -VV"
     BUILD_CMD_SIMPLE = \
-        "clang++ -std=c++11 -o {binary} {compiler_flags} {binary}.cpp"
+        "clang++ -std=c++14 -o {binary} {compiler_flags} {binary}.cpp"
 
     def __init__(self, task_node, root_folder, job_file):
         """Initialize the C++ Task."""

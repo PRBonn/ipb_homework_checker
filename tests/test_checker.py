@@ -9,7 +9,7 @@ sys.path.append('../src')
 
 from checker import Checker
 import tools
-
+import tasks
 
 class TestChecker(unittest.TestCase):
     """Test the checker."""
@@ -33,14 +33,14 @@ class TestChecker(unittest.TestCase):
 
         self.assertEqual(len(results['Homework 1']['Task 2']), 1)
         self.assertNotIn("Test 1", results['Homework 1']['Task 2'])
-        self.assertIn("Build Succeeded", results['Homework 1']['Task 2'])
+        self.assertIn(tasks.BUILD_SUCCESS_TAG, results['Homework 1']['Task 2'])
 
         self.assertTrue(results['Homework 1']
                         ['Task 3']['Test 1'].succeeded())
         self.assertFalse(results['Homework 1']
                          ['Task 3']['Test 2'].succeeded())
 
-        self.assertIn('Style Errors', results['Homework 1']['Task 4'])
+        self.assertIn(tasks.STYLE_ERROR_TAG, results['Homework 1']['Task 4'])
         self.assertTrue(results['Homework 1']
                         ['Task 4']['Test 1'].succeeded())
         self.assertFalse(results['Homework 1']

@@ -69,13 +69,20 @@ homeworks:
               Hello World!
               Another line
               test_me.sh
-      - name: Task 3  # Non existing Task
+      - name: Task 3
         language: cpp
         folder: task_3
         build_type: simple
+        tests:
+          - name: Test 1  # Should fail because of the timeout.
+            expected_output: "irrelevant"
+      - name: Task 4  # Non existing Task
+        language: cpp
+        folder: task_4
+        build_type: simple
         output_type: number
         tests:
-          - name: Test 1  # Should fail as the binary returns a string
+          - name: Test 1
             expected_output: 4
 
   - name: "Homework 3"

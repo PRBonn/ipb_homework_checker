@@ -11,6 +11,7 @@ from checker import Checker
 import tools
 import tasks
 
+
 class TestChecker(unittest.TestCase):
     """Test the checker."""
 
@@ -23,7 +24,7 @@ class TestChecker(unittest.TestCase):
         self.assertEqual(len(results), 3)
         self.assertEqual(len(results['Homework 1']), 4)
         self.assertEqual(len(results['Homework 1']['Task 1']), 3)
-        self.assertEqual(len(results['Homework 2']), 3)
+        self.assertEqual(len(results['Homework 2']), 4)
         self.assertEqual(results['Homework 1']
                          ['Task 1']['Test 1'].stderr, "")
         self.assertTrue(results['Homework 1']
@@ -46,15 +47,23 @@ class TestChecker(unittest.TestCase):
         self.assertFalse(results['Homework 1']
                          ['Task 4']['Test 2'].succeeded())
 
-        self.assertFalse(results['Homework 2']
-                         ['Task 1']['Test 1'].succeeded())
+        self.assertIn(tools.EXPIRED_TAG, results['Homework 2'])
         self.assertIsNotNone(results['Homework 2']
                              ['Task 2']['Test 1'])
+        self.assertFalse(results['Homework 2']
+                         ['Task 1']['Test 1'].succeeded())
         self.assertEqual(results['Homework 2']
                          ['Task 2']['Test 1'].stderr, '')
+
         self.assertTrue(results['Homework 2']
                         ['Task 2']['Test 1'].succeeded())
-        self.assertIn(tools.EXPIRED_TAG, results['Homework 2'])
+
+        self.assertFalse(results['Homework 2']
+                         ['Task 3']['Test 1'].succeeded())
+        self.assertEqual(
+            results['Homework 2']
+            ['Task 3']['Test 1'].stderr,
+            "Timeout: command './main' ran longer than 20 seconds")
 
         self.assertIsNotNone(results['Homework 3']
                              ['Google Tests']['Just build'])

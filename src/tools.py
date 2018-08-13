@@ -170,7 +170,7 @@ def __run_subprocess(*popenargs,
     if input is not None:
         if 'stdin' in kwargs:
             raise ValueError('stdin and input arguments may not both be used.')
-        kwargs['stdin'] = PIPE
+        kwargs['stdin'] = subprocess.PIPE
     import os
     import signal
     from subprocess import Popen, TimeoutExpired, CalledProcessError

@@ -7,7 +7,7 @@ from tools import MAX_DATE_STR
 from schema import Schema, SchemaError, Or, Optional
 from schema_tags import Tags, OutputTags, BuildTags, LangTags
 from ruamel.yaml import YAML
-from ruamel.yaml.comments import CommentedMap
+from ruamel.yaml.comments import CommentedMap, CommentedSeq
 
 log = logging.getLogger("GHC")
 
@@ -56,7 +56,7 @@ class SchemaManager:
         yaml.explicit_start = True
         yaml.indent(mapping=2, sequence=4, offset=2)
         with open(file_name, 'r') as stream:
-            contents = yaml.load(stream)
+            contents = SchemaManager.__to_simple_dict(yaml.load(stream))
             try:
                 self.__validated_yaml = self.__schema.validate(contents)
             except SchemaError as exc:
@@ -66,6 +66,28 @@ class SchemaManager:
             str_dict = SchemaManager.__sanitize_value(
                 self.__schema._schema)
             yaml.dump(str_dict, outfile)
+
+    def __to_simple_list(commented_seq):
+        simple_list = []
+        for value in commented_seq:
+            if isinstance(value, CommentedSeq):
+                simple_list.append(SchemaManager.__to_simple_list(value))
+            elif isinstance(value, CommentedMap):
+                simple_list.append(SchemaManager.__to_simple_dict(value))
+            else:
+                simple_list.append(value)
+        return simple_list
+
+    def __to_simple_dict(commented_map):
+        simple_dict = {}
+        for key, value in commented_map.items():
+            if isinstance(value, CommentedMap):
+                simple_dict[key] = SchemaManager.__to_simple_dict(value)
+            elif isinstance(value, CommentedSeq):
+                simple_dict[key] = SchemaManager.__to_simple_list(value)
+            else:
+                simple_dict[key] = value
+        return simple_dict
 
     @property
     def validated_yaml(self):

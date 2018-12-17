@@ -3,11 +3,12 @@
 from os import path
 
 import logging
-import tools
 from datetime import datetime
-from schema_manager import SchemaManager
-from schema_tags import Tags
-from tasks import Task
+
+from . import tools
+from .schema_manager import SchemaManager
+from .schema_tags import Tags
+from .tasks import Task
 
 
 log = logging.getLogger("GHC")

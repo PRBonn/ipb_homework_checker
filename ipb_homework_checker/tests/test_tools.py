@@ -2,14 +2,10 @@
 """Test the tools."""
 
 import unittest
-from os import sys
 from os import path
 
-sys.path.append('src')
-sys.path.append('../src')
-
-import tools
-from schema_tags import OutputTags
+from ipb_homework_checker import tools
+from ipb_homework_checker.schema_tags import OutputTags
 
 
 class TestTools(unittest.TestCase):
@@ -17,10 +13,10 @@ class TestTools(unittest.TestCase):
 
     def test_pkg_name(self):
         """Pkg name test."""
-        self.assertEqual(tools.PKG_NAME, 'homework_checker')
+        self.assertEqual(tools.PKG_NAME, 'ipb_homework_checker')
         if path.basename(tools.PROJECT_ROOT_FOLDER):
             self.assertEqual(path.basename(tools.PROJECT_ROOT_FOLDER),
-                             'generic-homework-checker')
+                             'ipb_homework_checker')
 
     def test_convert_to(self):
         """Test conversion to expected type."""

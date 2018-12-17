@@ -2,14 +2,10 @@
 """Test the checker."""
 
 import unittest
-from os import sys
 
-sys.path.append('src')
-sys.path.append('../src')
-
-from checker import Checker
-import tools
-import tasks
+from ipb_homework_checker.checker import Checker
+from ipb_homework_checker import tools
+from ipb_homework_checker import tasks
 
 
 class TestChecker(unittest.TestCase):
@@ -19,7 +15,8 @@ class TestChecker(unittest.TestCase):
         """Check all homeworks and Tasks."""
         self.maxDiff = None
 
-        checker = Checker('tests/data/homework/example_job.yml')
+        checker = Checker(
+            'ipb_homework_checker/tests/data/homework/example_job.yml')
         results = checker.check_homework()
         self.assertEqual(len(results), 3)
         self.assertEqual(len(results['Homework 1']), 4)

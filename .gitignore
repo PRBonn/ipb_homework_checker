@@ -14,3 +14,7 @@
 /test.md
 
 build/
+
+/.eggs/
+
+*.egg-info/

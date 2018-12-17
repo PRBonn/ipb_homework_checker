@@ -7,9 +7,9 @@ import subprocess
 import logging
 import datetime
 
-from schema_tags import OutputTags
+from .schema_tags import OutputTags
 
-PKG_NAME = "homework_checker"
+PKG_NAME = "ipb_homework_checker"
 PROJECT_ROOT_FOLDER = path.abspath(path.dirname(path.dirname(__file__)))
 DATE_PATTERN = "%Y-%m-%d %H:%M:%S"
 MAX_DATE_STR = datetime.datetime.max.strftime(DATE_PATTERN)

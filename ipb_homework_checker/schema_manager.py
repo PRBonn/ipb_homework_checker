@@ -3,11 +3,12 @@ import sys
 import logging
 import operator
 from os import path
-from tools import MAX_DATE_STR
 from schema import Schema, SchemaError, Or, Optional
-from schema_tags import Tags, OutputTags, BuildTags, LangTags
 from ruamel.yaml import YAML
 from ruamel.yaml.comments import CommentedMap, CommentedSeq
+
+from .tools import MAX_DATE_STR
+from .schema_tags import Tags, OutputTags, BuildTags, LangTags
 
 log = logging.getLogger("GHC")
 

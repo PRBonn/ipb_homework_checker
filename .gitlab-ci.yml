@@ -1,4 +1,4 @@
-image: gitlab.ipb.uni-bonn.de:4567/global/docker-images/ipb_default
+image: gitlab.ipb.uni-bonn.de:4567/ipb-team/global/docker-images/ipb_default
 
 test:
   before_script:

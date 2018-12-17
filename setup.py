@@ -6,7 +6,7 @@ from distutils import log
 from setuptools import setup
 from setuptools.command.install import install
 
-VERSION_STRING = '0.0.3'
+VERSION_STRING = '0.0.4'
 
 PACKAGE_NAME = 'ipb_homework_checker'
 

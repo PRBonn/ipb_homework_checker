@@ -14,3 +14,7 @@
 /test.md
 
 build/
+
+/.eggs/
+
+/ipb_homework_checker.egg-info/

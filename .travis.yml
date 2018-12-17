@@ -1,0 +1,24 @@
+language: generic
+matrix:
+  include:
+  - dist: precise
+    python: '3.6'
+    language: python
+    os: linux
+    env: PYTHON=/usr/bin/python3.6
+  - dist: trusty
+    python: '3.6'
+    language: python
+    os: linux
+    env: PYTHON=/usr/bin/python3.6
+before_install:
+- pip install ruamel.yaml schema setuptools cpplint datetime nose
+- pip install flake8 coverage codacy-coverage
+install:
+- python setup.py develop
+script:
+- python setup.py nosetests -s --with-coverage --cover-xml
+# after_success:
+# - python-codacy-coverage -r coverage.xml
+notifications:
+  email: false

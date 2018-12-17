@@ -62,11 +62,18 @@ class SchemaManager:
                 self.__validated_yaml = self.__schema.validate(contents)
             except SchemaError as exc:
                 sys.exit(exc.code)
-        # Write the schema every time we run this code.
-        with open(SCHEMA_FILE, 'w') as outfile:
-            str_dict = SchemaManager.__sanitize_value(
-                self.__schema._schema)
-            yaml.dump(str_dict, outfile)
+        # Write the schema every time we run this code while developing. We
+        # don't want to run this when the package is installed as this we won't
+        # have the permission. This is intended to keep the schema file up to
+        # date when we add new stuff to it.
+        try:
+            with open(SCHEMA_FILE, 'w') as outfile:
+                str_dict = SchemaManager.__sanitize_value(
+                    self.__schema._schema)
+                yaml.dump(str_dict, outfile)
+        except OSError:
+            log.debug(
+                "Cannot write schema file. We only use this while developing.")
 
     def __to_simple_list(commented_seq):
         simple_list = []

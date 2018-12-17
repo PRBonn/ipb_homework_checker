@@ -6,7 +6,7 @@ from distutils import log
 from setuptools import setup
 from setuptools.command.install import install
 
-VERSION_STRING = '0.0.5'
+VERSION_STRING = '0.0.6'
 
 PACKAGE_NAME = 'ipb_homework_checker'
 
@@ -60,15 +60,12 @@ setup(
         'License :: OSI Approved :: Apache Software License',
     ],
     description="""A generic homework checker.""",
-    long_description="""This is a homework checker. It can run various types of
-    code, such as Python, Bash and C++ and compare the output with expected one
-    defined in a yaml receipt. It is also able to run Google tests. As a result
-    it generates a markdown table that is suited for an upload to a students
-    repo.""",
+    long_description=open('README.md').read(),
     test_suite='tests',
     entry_points={
         'console_scripts': [
             'check_homework = ipb_homework_checker.check_homework:main',
+            'print_repo_name = ipb_homework_checker.print_repo_name:main',
         ],
     },
     cmdclass={'install': PermissiveInstall},

@@ -47,6 +47,24 @@ class TestTools(unittest.TestCase):
             cmd_result.stderr,
             "Timeout: command 'sleep 10' ran longer than 1 seconds")
 
+    def test_git_url(self):
+        """Test that we can break an endless loop."""
+        domain, user, project = tools.parse_git_url(
+            "https://gitlab.ipb.uni-bonn.de/igor/some_project.git")
+        self.assertEqual(domain, "gitlab.ipb.uni-bonn.de")
+        self.assertEqual(user, "igor")
+        self.assertEqual(project, "some_project")
+        domain, user, project = tools.parse_git_url(
+            "git@gitlab.ipb.uni-bonn.de:igor/some_project.git")
+        self.assertEqual(domain, "gitlab.ipb.uni-bonn.de")
+        self.assertEqual(user, "igor")
+        self.assertEqual(project, "some_project")
+        domain, user, project = tools.parse_git_url(
+            "git@github.com:PRBonn/depth_clustering.git")
+        self.assertEqual(domain, "github.com")
+        self.assertEqual(user, "PRBonn")
+        self.assertEqual(project, "depth_clustering")
+
     def test_endless_loop_timeout(self):
         """Test that we can break an endless loop."""
         from time import monotonic as timer

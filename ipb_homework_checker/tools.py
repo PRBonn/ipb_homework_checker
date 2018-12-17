@@ -62,6 +62,27 @@ def convert_to(output_type, value):
     return result, "OK"
 
 
+def parse_git_url(git_url):
+    """Parse the git url.
+
+    Args:
+        git_url (str): url of a git repository (https or ssh)
+
+    Returns:
+        (str, str, str): tupple of domain, user and project name parsed from url
+    """
+    import re
+    regex = re.compile(r'(?:git@|https:\/\/)'  # Prefix
+                       r'([\w\-_\.]+)'         # Domain
+                       r'[:\/]'                # Separator : or /
+                       r'([\w\-_\.\/]+)'       # User or folders
+                       r'[\/]'                 # Separator /
+                       r'([\w\-_]+)'           # Project name
+                       r'(?:.git)*$')          # .git or nothing
+    domain, user, project = regex.search(git_url).groups()
+    return domain, user, project
+
+
 class CmdResult:
     """A small container for command result."""
     SUCCESS = 0
@@ -153,7 +174,7 @@ def run_command(command, shell=True, cwd=path.curdir, env=environ, timeout=20):
         return CmdResult(returncode=1, stderr=output_text)
 
 
-def __run_subprocess(*popenargs,
+def __run_subprocess(command,
                      input=None,
                      timeout=None,
                      check=False,
@@ -178,7 +199,7 @@ def __run_subprocess(*popenargs,
     import signal
     from subprocess import Popen, TimeoutExpired, CalledProcessError
     from subprocess import CompletedProcess
-    with Popen(*popenargs, preexec_fn=os.setsid, **kwargs) as process:
+    with Popen(command, preexec_fn=os.setsid, **kwargs) as process:
         try:
             stdout, stderr = process.communicate(input, timeout=timeout)
         except TimeoutExpired:

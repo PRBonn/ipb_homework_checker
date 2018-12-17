@@ -5,7 +5,7 @@ test:
   - pip3 install ruamel.yaml schema cpplint datetime
   script:
   - git submodule update --init
-  - python3 -m unittest discover tests/
+  - python3 -m unittest discover ipb_homework_checker/tests/
   tags:
   - docker
   except:

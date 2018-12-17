@@ -1,6 +1,6 @@
 """Write test results into a markdown file."""
 
-from tools import EXPIRED_TAG
+from .tools import EXPIRED_TAG
 
 TABLE_TEMPLATE = "| {hw_name} | {task_name} | {test_name} | {result_sign} |\n"
 TABLE_SEPARATOR = "|---|---|---|:---:|\n"

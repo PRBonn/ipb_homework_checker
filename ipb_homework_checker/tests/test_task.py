@@ -2,16 +2,12 @@
 """Test the checker."""
 
 import unittest
-from os import sys
 from os import path
 
-sys.path.append('src')
-sys.path.append('../src')
 
-from checker import Checker
-from tasks import Task
-from schema_tags import Tags
-import tools
+from ipb_homework_checker.checker import Checker
+from ipb_homework_checker.tasks import Task
+from ipb_homework_checker.schema_tags import Tags
 
 
 class TestTask(unittest.TestCase):
@@ -21,7 +17,8 @@ class TestTask(unittest.TestCase):
         """Check that we can inject folders that are now present yet."""
         self.maxDiff = None
 
-        checker = Checker('tests/data/dummy/dummy_solution/solution.yml')
+        checker = Checker(
+            'ipb_homework_checker/tests/data/dummy/dummy_solution/solution.yml')
         homework_node = checker._base_node[Tags.HOMEWORKS_TAG][0]
         current_folder = path.join(
             checker._checked_code_folder, homework_node[Tags.FOLDER_TAG])
@@ -45,7 +42,8 @@ class TestTask(unittest.TestCase):
         """Check that we can inject folders that are now present yet."""
         self.maxDiff = None
 
-        checker = Checker('tests/data/dummy/dummy_solution/solution.yml')
+        checker = Checker(
+            'ipb_homework_checker/tests/data/dummy/dummy_solution/solution.yml')
         homework_node = checker._base_node[Tags.HOMEWORKS_TAG][0]
         current_folder = path.join(
             checker._checked_code_folder, homework_node[Tags.FOLDER_TAG])

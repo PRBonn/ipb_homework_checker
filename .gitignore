@@ -17,4 +17,4 @@ build/
 
 /.eggs/
 
-/ipb_homework_checker.egg-info/
+*.egg-info/

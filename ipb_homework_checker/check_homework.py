@@ -3,8 +3,8 @@
 import argparse
 import logging
 
-from checker import Checker
-from md_writer import MdWriter
+from .checker import Checker
+from .md_writer import MdWriter
 
 
 logging.basicConfig()
@@ -21,10 +21,12 @@ def main():
         action='store_true')
     parser.add_argument(
         '-i', '--input',
-        help='An input *.yml file with the job definition.')
+        help='An input *.yml file with the job definition.',
+        required=True)
     parser.add_argument(
         '-o', '--output',
-        help='An output *.md file with the results.')
+        help='An output *.md file with the results.',
+        required=True)
     args = parser.parse_args()
     if args.verbose:
         log.setLevel(logging.DEBUG)

@@ -1,11 +1,10 @@
 """Different types of Tasks."""
 
 import logging
-import tools
-
 from os import path
 
-from schema_tags import Tags, LangTags, BuildTags
+from . import tools
+from .schema_tags import Tags, LangTags, BuildTags
 
 
 log = logging.getLogger("GHC")

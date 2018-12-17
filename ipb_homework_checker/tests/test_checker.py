@@ -20,6 +20,7 @@ class TestChecker(unittest.TestCase):
         results = checker.check_homework()
         self.assertEqual(len(results), 3)
         self.assertEqual(len(results['Homework 1']), 4)
+        print(results['Homework 1']['Task 1'])
         self.assertEqual(len(results['Homework 1']['Task 1']), 3)
         self.assertEqual(len(results['Homework 2']), 4)
         self.assertEqual(results['Homework 1']

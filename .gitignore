@@ -18,3 +18,7 @@ build/
 /.eggs/
 
 *.egg-info/
+
+/.coverage
+
+/coverage.xml

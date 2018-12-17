@@ -1,0 +1,8 @@
+# .coveragerc to control coverage.py
+[run]
+omit =
+    # omit main
+    ipb_homework_checker/check_homework.py
+
+[html]
+directory = coverage_html_report

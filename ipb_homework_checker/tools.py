@@ -108,10 +108,13 @@ class CmdResult:
 
     def __repr__(self):
         """Representatin of command result."""
+        stdout = self.stdout
+        if not stdout:
+            stdout = ""
         if self.stderr:
-            return "stdout: {}, stderr: {}".format(self.stdout.strip(),
+            return "stdout: {}, stderr: {}".format(stdout.strip(),
                                                    self.stderr.strip())
-        return self.stdout.strip()
+        return stdout.strip()
 
 
 def run_command(command, shell=True, cwd=path.curdir, env=environ, timeout=20):
